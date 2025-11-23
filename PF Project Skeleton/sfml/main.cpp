@@ -5,6 +5,7 @@
 #include <iostream>
 
 int COL;
+int ROWS;
 
 // ============================================================================
 // MAIN.CPP - Entry point of the application (NO CLASSES)
