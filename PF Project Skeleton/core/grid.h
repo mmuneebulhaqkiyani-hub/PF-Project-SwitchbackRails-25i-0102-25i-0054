@@ -8,7 +8,7 @@
 // ============================================================================
 
 // Check if a position is within grid bounds
-bool isInBounds();
+bool isInBounds(int x, int y);
 
 // Check if a tile is a track (can trains move on it?)
 bool isTrackTile();
