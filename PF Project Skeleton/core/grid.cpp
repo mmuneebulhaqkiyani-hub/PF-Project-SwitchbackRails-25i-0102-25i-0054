@@ -19,9 +19,11 @@ bool isInBounds(int x, int y) {
 // ----------------------------------------------------------------------------
 // Returns true if the tile can be traversed by trains.
 // ----------------------------------------------------------------------------
-bool isTrackTile(char isTrackTile) {
-    if (isTrackTile=='-' || isTrackTile=='|' || isTrackTile=='/' || isTrackTile=='\\' || isTrackTile=='+' || isTrackTile=='=' || isTrackTile=='S' || isTrackTile=='D')
+bool isTrackTile(char ITT) {
+    if (ITT=='-' || ITT=='|' || ITT=='/' || ITT=='\\' || ITT=='+' || ITT=='=' || ITT=='S' || ITT=='D')
         return true;
+    if (isSwitchTile(ITT)) return true;
+     else return false;
 }
 
 // ----------------------------------------------------------------------------
@@ -29,8 +31,13 @@ bool isTrackTile(char isTrackTile) {
 // ----------------------------------------------------------------------------
 // Returns true if the tile is 'A'..'Z'.
 // ----------------------------------------------------------------------------
-bool isSwitchTile() {
+bool isSwitchTile(char IST) {
+    if (IST=='S' || IST=='D')
+    return false;
+    if (IST>='A' && IST<='Z')
+    return true;    
 }
+
 
 // ----------------------------------------------------------------------------
 // Get switch index from character.
