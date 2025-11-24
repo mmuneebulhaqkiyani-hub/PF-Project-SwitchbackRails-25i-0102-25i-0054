@@ -38,7 +38,7 @@
 // ----------------------------------------------------------------------------
 // GLOBAL STATE: GRID
 // ----------------------------------------------------------------------------
- extern int g_rows; //read this from level file 
+ extern int g_rows; 
  extern int g_columns;
  extern char g_grid[MaxRows][MaxColumns];
 
