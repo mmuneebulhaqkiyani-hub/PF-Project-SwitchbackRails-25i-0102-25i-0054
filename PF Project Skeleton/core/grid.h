@@ -20,7 +20,7 @@ bool isSwitchTile(char m);
 int getSwitchIndex(char x);
 
 // Check if a position is a spawn point
-bool isSpawnPoint();
+bool isSpawnPoint(char t);
 
 // Check if a position is a destination point
 bool isDestinationPoint();
