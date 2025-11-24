@@ -3,13 +3,7 @@
 #include "../core/simulation.h"
 #include "../core/io.h"
 #include <iostream>
-
-int COL;
-int ROWS;
-
-int hello;
-int ui;
-int hi;
+//helloo yyr kaam ni kr rha kia?
 // ============================================================================
 // MAIN.CPP - Entry point of the application (NO CLASSES)
 // ============================================================================
