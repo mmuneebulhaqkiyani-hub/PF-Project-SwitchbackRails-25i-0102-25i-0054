@@ -5,7 +5,7 @@
 #include <cstring>
 #include <cstdio>
 #include <cstdlib>
-
+using namespace std;
 // ============================================================================
 // IO.CPP - Level I/O and logging
 // ============================================================================
@@ -16,8 +16,57 @@
 // Load a .lvl file into global state.
 // ----------------------------------------------------------------------------
 bool loadLevelFile() {
+     // hard coding it for now ,well deal with it later
+     ifstream file("data/levels/easy_level.lvl");
+     if (!file.is_open()) 
+        {
+          return false;
+        }
+    
+     initializeSimulationState();
+    
+
+    string line;
+    bool inMap = false;   // are we inside the MAP section?
+    int row = 0;
+     while (getline(file, line)) {
+        //first line map ha?
+        if (line == "MAP") {
+            inMap = true;
+            continue;
+        }
+        
+        if (line == "SWITCHES:") {
+            inMap = false;
+            break;              
+        }
+        if (inMap) {
+        //empty lines k liye
+        if (line == "") {
+            continue;
+        }
+        //length caclulation for the row and assigning  values.
+        //har column k liye for the row
+        if (row < MaxRows) {
+                int lengthline = (int)line.size();
+        
+        for (int i = 0; i < lengthline && i < MaxColumns; i++) {
+                    g_grid[row][i] = line[i];
+        }            
+        //extra rows ma spaces
+        for (int i = lengthline; i < MaxColumns; i++) {
+                    g_grid[row][i] = ' ';
+        }    
+        row = row + 1;
+}
+}
 }
 
+    g_rows = row;
+    g_columns = 0;
+    file.close();
+    return true;
+}   
 // ----------------------------------------------------------------------------
 // INITIALIZE LOG FILES
 // ----------------------------------------------------------------------------
