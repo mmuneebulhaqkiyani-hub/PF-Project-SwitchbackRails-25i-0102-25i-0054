@@ -14,7 +14,7 @@ bool isInBounds(int x, int y);
 bool isTrackTile(int x, int y);
 
 // Check if a tile is a switch (A-Z)
-bool isSwitchTile();
+bool isSwitchTile(char m);
 
 // Get the switch index (0-25) from a switch character (A-Z)
 int getSwitchIndex();
