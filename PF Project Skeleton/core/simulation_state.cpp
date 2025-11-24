@@ -45,4 +45,12 @@ int g_columns = 0; // this is the number of columns in the grid
 // Called before loading a new level.
 // ----------------------------------------------------------------------------
 void initializeSimulationState() {
+    g_rows=0;
+    g_columns=0;
+    for (int r=0;r<MaxRows; r++) {
+     for (int c=0; c<MaxColumns; c++) 
+        {
+            g_grid[r][c]='.';
+        }
+    }
 }
