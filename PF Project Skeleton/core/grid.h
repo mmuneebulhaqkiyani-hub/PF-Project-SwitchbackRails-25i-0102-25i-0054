@@ -11,16 +11,16 @@
 bool isInBounds(int x, int y);
 
 // Check if a tile is a track (can trains move on it?)
-bool isTrackTile(int x, int y);
+bool isTrackTile(isTrackTile);
 
 // Check if a tile is a switch (A-Z)
-bool isSwitchTile(char m);
+bool isSwitchTile(char isswitchtile);
 
 // Get the switch index (0-25) from a switch character (A-Z)
-int getSwitchIndex(char x);
+int getSwitchIndex(char getswitchindex);
 
 // Check if a position is a spawn point
-bool isSpawnPoint(char t);
+bool isSpawnPoint();
 
 // Check if a position is a destination point
 bool isDestinationPoint();
