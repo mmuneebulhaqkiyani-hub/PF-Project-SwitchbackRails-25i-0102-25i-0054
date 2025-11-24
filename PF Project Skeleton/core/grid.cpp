@@ -10,8 +10,8 @@
 // ----------------------------------------------------------------------------
 // Returns true if x,y are within bounds.
 // ----------------------------------------------------------------------------
-bool isInBounds() {
-    
+bool isInBounds(int x, int y) {
+    return (x>=0 && x<g_columns && y>=0 && y<g_rows);
 }
 
 // ----------------------------------------------------------------------------
@@ -19,7 +19,9 @@ bool isInBounds() {
 // ----------------------------------------------------------------------------
 // Returns true if the tile can be traversed by trains.
 // ----------------------------------------------------------------------------
-bool isTrackTile() {
+bool isTrackTile(char isTrackTile) {
+    if (isTrackTile=='-' || isTrackTile=='|' || isTrackTile=='/' || isTrackTile=='\\' || isTrackTile=='+' || isTrackTile=='=' || isTrackTile=='S' || isTrackTile=='D')
+        return true;
 }
 
 // ----------------------------------------------------------------------------
