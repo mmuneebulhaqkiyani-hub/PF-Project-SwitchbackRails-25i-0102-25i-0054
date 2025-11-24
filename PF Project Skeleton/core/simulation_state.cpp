@@ -10,7 +10,7 @@
 // ----------------------------------------------------------------------------
 int g_rows = 0; // this the number of rows in the grid
 int g_columns = 0; // this is the number of columns in the grid 
-int g_grid[MaxRows][MaxColumns];  // 2D array representing the grid map
+char g_grid[MaxRows][MaxColumns];  // 2D array representing the grid map
 
 // ----------------------------------------------------------------------------
 // TRAINS

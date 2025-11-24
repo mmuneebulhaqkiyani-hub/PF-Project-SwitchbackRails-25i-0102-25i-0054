@@ -33,9 +33,10 @@ bool isTrackTile(char ITT) {
 // ----------------------------------------------------------------------------
 bool isSwitchTile(char IST) {
     if (IST=='S' || IST=='D')
-    return false;
+     return false;
     if (IST>='A' && IST<='Z')
-    return true;    
+     return true; 
+    return false;   
 }
 
 
