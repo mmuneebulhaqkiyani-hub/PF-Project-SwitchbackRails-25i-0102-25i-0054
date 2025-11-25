@@ -12,11 +12,18 @@
 // ----------------------------------------------------------------------------
  const int MaxRows= 50;
  const int MaxColumns=80;       
-
+// this will be like the qactual grid size for whatever the current level is
+// since the actual memory is in .cpp file we have to use the extern thing 
+ extern int g_rows; 
+ extern int g_columns;
+ // just remembered that we have to make 2d array for the maximum width and hieght of the grid thing
+ extern char g_grid[MaxRows][MaxColumns];
 // ----------------------------------------------------------------------------
 // TRAIN CONSTANTS
 // ----------------------------------------------------------------------------
-
+  // we have to declare max train constant here and since it dont mention the exact number lets just do a century (W babar lol)
+  const int MaxTrains=100;
+  extern int g_numtrains; // this is the current number of trains in the simulation
 
 // ----------------------------------------------------------------------------
 // SWITCH CONSTANTS
@@ -38,9 +45,6 @@
 // ----------------------------------------------------------------------------
 // GLOBAL STATE: GRID
 // ----------------------------------------------------------------------------
- extern int g_rows; 
- extern int g_columns;
- extern char g_grid[MaxRows][MaxColumns];
 
 // ----------------------------------------------------------------------------
 // GLOBAL STATE: TRAINS
