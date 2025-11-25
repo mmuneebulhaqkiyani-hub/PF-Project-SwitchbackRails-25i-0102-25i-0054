@@ -20,13 +20,13 @@ bool isSwitchTile(char IST);
 int getSwitchIndex(char getswitchindex);
 
 // Check if a position is a spawn point
-bool isSpawnPoint();
+bool isSpawnPoint(int x, int y);
 
 // Check if a position is a destination point
-bool isDestinationPoint();
+bool isDestinationPoint(int x, int y);
 
 // Place or remove a safety tile at a position (for mouse editing)
 // Returns true if successful
-bool toggleSafetyTile();
+bool toggleSafetyTile(int x, int y);
 
 #endif

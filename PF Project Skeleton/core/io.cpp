@@ -2,10 +2,13 @@
 #include "simulation_state.h"
 #include "grid.h"
 #include <fstream>
+#include <string>
+#include <iostream>
 #include <cstring>
 #include <cstdio>
 #include <cstdlib>
 using namespace std;
+
 // ============================================================================
 // IO.CPP - Level I/O and logging
 // ============================================================================
@@ -18,11 +21,14 @@ using namespace std;
 bool loadLevelFile() {
      // hard coding it for now ,we'll deal with it later
      ifstream file("data/levels/easy_level.lvl");
-     if (!file.is_open()) 
-        {
-          return false;
-        }
-    
+     if (!file.is_open()) {
+        cout << "LEVEL FILE FAILED TO OPEN!" << endl;
+        return false;
+    }
+    else {
+        cout << "LEVEL FILE OPENED SUCCESSFULLY!" << endl;
+    }
+   
      initializeSimulationState();
     
 
@@ -31,7 +37,7 @@ bool loadLevelFile() {
     int row = 0;
      while (getline(file, line)) {
         //first line map ha?
-        if (line == "MAP") {
+        if (line == "MAP:") {
             inMap = true;
             continue;
         }
