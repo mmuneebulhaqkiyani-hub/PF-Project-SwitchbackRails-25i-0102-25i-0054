@@ -16,7 +16,7 @@ using namespace std;
 // Load a .lvl file into global state.
 // ----------------------------------------------------------------------------
 bool loadLevelFile() {
-     // hard coding it for now ,well deal with it later
+     // hard coding it for now ,we'll deal with it later
      ifstream file("data/levels/easy_level.lvl");
      if (!file.is_open()) 
         {
@@ -53,7 +53,7 @@ bool loadLevelFile() {
         for (int i = 0; i < lengthline && i < MaxColumns; i++) {
                     g_grid[row][i] = line[i];
         }            
-        //extra rows ma spaces
+        //extra rows mai spaces
         for (int i = lengthline; i < MaxColumns; i++) {
                     g_grid[row][i] = ' ';
         }    
@@ -63,7 +63,8 @@ bool loadLevelFile() {
 }
 
     g_rows = row;
-    g_columns = 0;
+    //for now do same width and height
+    g_columns = MaxColumns;
     file.close();
     return true;
 }   
