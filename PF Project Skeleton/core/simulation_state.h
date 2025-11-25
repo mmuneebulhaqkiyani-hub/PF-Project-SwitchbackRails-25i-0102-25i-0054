@@ -48,6 +48,10 @@
  const int Maxswitches=26; // A-Z means 26 switches max
 //each level will have specific number of switches so we need a variable for that too
  extern int g_Switchcurrent; // current number of switches in the level
+ //we need x and y position arrays for the switches too
+ extern int g_switchX[Maxswitches]; // x position for each switch
+extern int g_switchY[Maxswitches]; // y position for each switch
+
 // ----------------------------------------------------------------------------
 // WEATHER CONSTANTS
 // ----------------------------------------------------------------------------
