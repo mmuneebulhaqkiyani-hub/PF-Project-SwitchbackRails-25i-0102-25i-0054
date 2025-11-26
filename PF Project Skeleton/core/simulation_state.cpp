@@ -51,7 +51,7 @@ void initializeSimulationState() {
     for (int r=0;r<MaxRows; r++) {
      for (int c=0; c<MaxColumns; c++) 
         {
-            g_grid[r][c]='.';
+            g_grid[r][c]=' ';
         }
     }
 }
