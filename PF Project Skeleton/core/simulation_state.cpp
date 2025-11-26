@@ -62,10 +62,8 @@ void initializeSimulationState() {
         for (int i = 0; i < MaxTrains; i++) {
         g_trainActive[i]    = false;
         g_trainX[i]= 0;
-
-
         g_trainY[i]= 0;
-       // g_trainDir[i]= DIR_RIGHT;   // default, can be changed when loading
+    
         g_trainSpawnTick[i]= 0;
     }
 }
