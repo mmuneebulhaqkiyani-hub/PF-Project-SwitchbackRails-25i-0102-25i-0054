@@ -15,8 +15,12 @@ char g_grid[MaxRows][MaxColumns];  // 2D array representing the grid map
 // ----------------------------------------------------------------------------
 // TRAINS
 // ----------------------------------------------------------------------------
-
-
+int g_trainCount= 0;
+ int g_trainX[MaxTrains];
+int g_trainY[MaxTrains];
+int g_trainDir[MaxTrains];
+int g_trainSpawnTick[MaxTrains];
+bool g_trainActive[MaxTrains];
 // ----------------------------------------------------------------------------
 // SWITCHES
 // ----------------------------------------------------------------------------
@@ -54,4 +58,15 @@ void initializeSimulationState() {
             g_grid[r][c]=' ';
         }
     }
+    g_trainCount=0;
+        for (int i = 0; i < MaxTrains; i++) {
+        g_trainActive[i]    = false;
+        g_trainX[i]= 0;
+
+
+        g_trainY[i]= 0;
+       // g_trainDir[i]= DIR_RIGHT;   // default, can be changed when loading
+        g_trainSpawnTick[i]= 0;
+    }
 }
+
