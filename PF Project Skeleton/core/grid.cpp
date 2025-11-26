@@ -20,11 +20,23 @@ bool isInBounds(int x, int y) {
 // Returns true if the tile can be traversed by trains.
 // ----------------------------------------------------------------------------
 bool isTrackTile(char ITT) {
-    if (ITT=='-' || ITT=='|' || ITT=='/' || ITT=='\\' || ITT=='+' || ITT=='=' || ITT=='S' || ITT=='D')
+    if (ITT=='-' || ITT=='|' || ITT=='/'|| ITT=='\\' ||
+        ITT =='+' || ITT=='='|| ITT=='S'|| ITT=='D') 
+    {
         return true;
-    if (isSwitchTile(ITT)) return true;
-     else return false;
+    }
+    else {
+        if (isSwitchTile(ITT)) 
+        {
+            return true;
+        }
+        else 
+        {
+            return false;
+        }
+    }
 }
+
 
 // ----------------------------------------------------------------------------
 // Check if a tile is a switch.
@@ -32,11 +44,21 @@ bool isTrackTile(char ITT) {
 // Returns true if the tile is 'A'..'Z'.
 // ----------------------------------------------------------------------------
 bool isSwitchTile(char IST) {
-    if (IST=='S' || IST=='D')
-     return false;
-    if (IST>='A' && IST<='Z')
-     return true; 
-    return false;   
+    if (IST=='S' || IST=='D') 
+    {
+        return false;
+    }
+    else 
+    {
+        if (IST>='A' && IST<='Z')
+         {
+            return true;
+        }
+        else 
+        {
+            return false;
+        }
+    }
 }
 
 
@@ -45,23 +67,73 @@ bool isSwitchTile(char IST) {
 // ----------------------------------------------------------------------------
 // Maps 'A'..'Z' to 0..25, else -1.
 // ----------------------------------------------------------------------------
-int getSwitchIndex() {
+int getSwitchIndex(char tile) {
+    //first check is it even a switch
+    if (tile>='A' && tile<='Z') 
+    {
+     int index = 0;
+     char letter = 'A';
+    //index loop
+    while (letter != tile) {
+            index = index + 1;
+            letter = letter + 1;
+        }
+        
+      return index;
+    }
+    else 
+    {
+       return -1;
+    }
 }
+
 
 // ----------------------------------------------------------------------------
 // Check if a position is a spawn point.
 // ----------------------------------------------------------------------------
 // Returns true if x,y is a spawn.
 // ----------------------------------------------------------------------------
-bool isSpawnPoint() {
+
+bool isSpawnPoint(int x, int y) {
+    if (isInBounds(x, y)) 
+    {
+        if (g_grid[y][x] == 'S') 
+        {
+         return true;
+        }
+        else 
+        {
+         return false;
+        }
+    }
+    else 
+    {
+        return false;
+    }
 }
+
 
 // ----------------------------------------------------------------------------
 // Check if a position is a destination.
 // ----------------------------------------------------------------------------
 // Returns true if x,y is a destination.
 // ----------------------------------------------------------------------------
-bool isDestinationPoint() {
+bool isDestinationPoint(int x, int y) {
+    if (isInBounds(x, y)) 
+    {
+        if (g_grid[y][x] == 'D') 
+        {
+            return true;
+        }
+        else 
+        {
+            return false;
+        }
+    }
+    else 
+    {
+        return false;
+    }
 }
 
 // ----------------------------------------------------------------------------
@@ -69,5 +141,32 @@ bool isDestinationPoint() {
 // ----------------------------------------------------------------------------
 // Returns true if toggled successfully.
 // ----------------------------------------------------------------------------
-bool toggleSafetyTile() {
+bool toggleSafetyTile(int x, int y) {
+    if (isInBounds(x, y)) 
+    {
+        char *cell = &g_grid[y][x];
+
+        if (*cell == ' ') 
+        {
+            *cell = '=';
+            return true;
+        }
+        else 
+        {
+            if (*cell=='=') 
+            {
+                *cell=' ';
+                return true;
+            }
+            else 
+            {
+                return false;
+            }
+        }
+    }
+    else 
+    {
+        return false;
+    }
 }
+
