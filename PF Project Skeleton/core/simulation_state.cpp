@@ -58,13 +58,13 @@ void initializeSimulationState() {
             g_grid[r][c]=' ';
         }
     }
-    g_trainCount=0;
-        for (int i = 0; i < MaxTrains; i++) {
-        g_trainActive[i]    = false;
-        g_trainX[i]= 0;
-        g_trainY[i]= 0;
-    
-        g_trainSpawnTick[i]= 0;
-    }
+// reset trains
+g_trainCount = 0;
+for (int i = 0; i < MaxTrains; i++) {
+    g_trainActive[i]= false;
+    g_trainX[i]= 0;
+    g_trainY[i]= 0;
+    g_trainDir[i]= 0;    // default to north (it dont really matter since itll  be set by .lvl file)
+    g_trainSpawnTick[i]=0;
 }
 
