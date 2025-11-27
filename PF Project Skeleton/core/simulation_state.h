@@ -71,7 +71,7 @@ extern int g_switchY[Maxswitches]; // y position for each switch
 // ----------------------------------------------------------------------------
 // GLOBAL STATE: TRAINS
 // ----------------------------------------------------------------------------
-
+extern int g_tickNumber; // this is the current simulation tick 
 
 // ----------------------------------------------------------------------------
 // GLOBAL STATE: SWITCHES (A-Z mapped to 0-25)
@@ -81,7 +81,7 @@ extern int g_switchY[Maxswitches]; // y position for each switch
 // ----------------------------------------------------------------------------
 // GLOBAL STATE: SPAWN POINTS
 // ----------------------------------------------------------------------------
-
+extern int  g_trainSpawnTick[MaxTrains];
 
 // ----------------------------------------------------------------------------
 // GLOBAL STATE: DESTINATION POINTS
