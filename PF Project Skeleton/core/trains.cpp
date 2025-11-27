@@ -90,6 +90,7 @@ void moveAllTrains() {
             continue; // skip inactive trains
         }
         int dx,dy;
+        getDeltaForDirection(g_traindirection[i], dx, dy);
         int newx=g_trainX[i] + dx;
         int newy=g_trainY[i] + dy;
         if (newx<0 || newx>=g_columns || newy<0 || newy>=g_rows) {
