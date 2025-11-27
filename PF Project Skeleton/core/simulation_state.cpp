@@ -34,10 +34,10 @@ int g_tickNumber=0;
 // ############################################################################
 // SWITCHES
 // ############################################################################
-   //filling it because we will work on it tomorrow
-int g_switchState[Maxswitches];        // current state (0 = straight, 1 = turn)
-int g_switchInitState[Maxswitches];    // initial state from level file
-int g_switchMode[Maxswitches];         // 0 = PER_DIR, 1 = GLOBAL
+   //filling it because we will work on it tomorrow (DONE FILLINGGGG)
+int g_switchState[Maxswitches];// current state (0 = straight, 1 = turn)
+int g_switchInitState[Maxswitches];// initial state from level file
+int g_switchMode[Maxswitches];// 0 = PER_DIR, 1 = GLOBAL
  // switch direction arrays
 int g_switchKUp[Maxswitches];
 int g_switchKRight[Maxswitches];
@@ -51,7 +51,7 @@ int g_switchCounterLeft[Maxswitches];
 // ############################################################################
 // DESTINATION POINTS
 // ############################################################################
-int g_numdestinations = 0;              // how many destination tiles in the map
+int g_numdestinations = 0;// how many destination tiles in the map
 int g_destinationX[MaxDestinations];
 int g_destinationY[MaxDestinations];
 
@@ -59,25 +59,25 @@ int g_destinationY[MaxDestinations];
 // ############################################################################
 // SIMULATION PARAMETERS
 // ############################################################################
-int g_weatherMode=WeatherNormal;      // WeatherNormal / WeatherRain / WeatherFog
-int g_randomSeed=0;                  // seed for deterministic random behaviour
+int g_weatherMode=WeatherNormal;// WeatherNormal / WeatherRain / WeatherFog
+int g_randomSeed=0;// seed for deterministic random behaviour
 
 
 // ############################################################################
 // METRICS
 // ############################################################################
-int g_totalTicksRun= 0;               // how many ticks ran in the simulation
-int g_trainsArrived=0;               // trains that reached destination
-int g_trainsCrashed= 0;               // trains that crashed
+int g_totalTicksRun= 0;// how many ticks ran in the simulation
+int g_trainsArrived=0;// trains that reached destination
+int g_trainsCrashed= 0;// trains that crashed
 
 
 // ############################################################################
 // EMERGENCY HALT
 // ############################################################################
-boolg_emergencyActive=false;  // true if emergency halt zone is active
-int g_emergencyCenterX=0;      // center x of 3x3 emergency zone
-int g_emergencyCenterY=0;      // center y of 3x3 emergency zone
-int g_emergencyTicksRemaining=0;     // ticks left for halt
+bool g_emergencyActive=false;// true if emergency halt zone is active
+int g_emergencyCenterX=0;// center x of 3x3 emergency zone
+int g_emergencyCenterY=0;// center y of 3x3 emergency zone
+int g_emergencyTicksRemaining=0; // ticks left for halt
 
 
 // ============================================================================
