@@ -14,7 +14,9 @@ int g_grid[MaxRows][MaxColumns];  // 2D array representing the grid map
 
 // ############################################################################
 // TRAINS
+
 // ############################################################################
+
 // using the exact variable names i wrote in the .h file so nothing breaks
 int g_numtrains=0;  // current number of trains in the simulation (my original var)
 int g_trainX[MaxTrains]; // this says the x position of each train
@@ -41,7 +43,9 @@ int g_switchMode[Maxswitches];// 0 = PER_DIR, 1 = GLOBAL
  // switch direction arrays
 int g_switchKUp[Maxswitches];
 int g_switchKRight[Maxswitches];
+
 int g_switchKDown[Maxswitches];
+
 int g_switchKLeft[Maxswitches];
   //their counters too
 int g_switchCounterUp[Maxswitches];
@@ -74,10 +78,11 @@ int g_trainsCrashed= 0;// trains that crashed
 // ############################################################################
 // EMERGENCY HALT
 // ############################################################################
-bool g_emergencyActive=false;// true if emergency halt zone is active
+bool  g_emergencyActive=false;// true if emergency halt zone is active
+
 int g_emergencyCenterX=0;// center x of 3x3 emergency zone
 int g_emergencyCenterY=0;// center y of 3x3 emergency zone
-int g_emergencyTicksRemaining=0; // ticks left for halt
+int g_emergencyTicksRemaining=0; // ticks left for halt so we starting from 0
 
 
 // ============================================================================
@@ -89,8 +94,7 @@ int g_emergencyTicksRemaining=0; // ticks left for halt
 // Called before loading a new level.
 // ----------------------------------------------------------------------------
 void initializeSimulationState() {
-    
-    
+        
     g_rows = 0;
     g_columns = 0;
 
