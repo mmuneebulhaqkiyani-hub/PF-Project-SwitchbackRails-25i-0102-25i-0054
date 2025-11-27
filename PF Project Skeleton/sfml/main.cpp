@@ -20,5 +20,13 @@
 // file or initialize application).
 // ----------------------------------------------------------------------------
 int main() {
+    initializeSimulation();
+
+
+
+    while (!isSimulationComplete()) 
+    {
+        simulateOneTick();
+    }
     
 }
