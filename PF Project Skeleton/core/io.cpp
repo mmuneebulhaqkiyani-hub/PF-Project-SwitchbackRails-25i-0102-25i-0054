@@ -101,16 +101,16 @@ bool loadLevelFile() {
 
             // try to read 5 integers from the line
             if (ss>>spawnTick>>x>>y>>dir>>color) {
-                if (g_trainCount<MaxTrains) {
-                    int i=g_trainCount;
+                if (g_numtrains<MaxTrains) {
+                    int i=g_numtrains;
 
                     g_trainSpawnTick[i] = spawnTick;
                     g_trainX[i]= x;
                     g_trainY[i]= y;
-                    g_trainDir[i]= dir;
-                    g_trainActive[i]= false; // will become true when spawned
+                    g_traindirection[i]=(char)dir;
+                    g_trainactive[i]= false; // will become true when spawned
 
-                    g_trainCount++;
+                    g_numtrains++;
                 }
             }
 

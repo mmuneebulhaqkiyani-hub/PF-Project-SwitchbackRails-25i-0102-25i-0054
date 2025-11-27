@@ -56,15 +56,6 @@ void initializeSimulationState() {
             g_grid[r][c] = ' ';
         }
     }
-<<<<<<< HEAD
-=======
-
-// clearing da grid with spaces
-for (int r = 0; r < MaxRows; r++) {
-    for (int c = 0; c < MaxColumns; c++) {
-        g_grid[r][c] = ' ';
-    }
-}
 
 // reset trains
 g_numtrains = 0;
@@ -72,29 +63,14 @@ g_tickNumber = 0;
 
 for (int i = 0; i < MaxTrains; i++) {
     g_trainactive[i]=false;
-    g_trainX[i]= 0;
-    g_trainY[i] = 0;
+    g_trainX[i]=0;
+    g_trainY[i]=0;
     g_traindirection[i]='N'; // default to north (will be overwritten by .lvl)
     g_traindestinationX[i]=0;
     g_traindestinationY[i]=0;
     g_trainSpawnTick[i]=0;
 }
 
->>>>>>> eb6e569371277fe4ed90b68f837a09e52d10611e
-
-    // reset trains
-    g_numtrains = 0;
 
 
-    g_tickNumber = 0;
-
-    for (int i = 0; i < MaxTrains; i++) {
-     g_trainactive[i] = false;
-        g_trainX[i] = 0;
-        g_trainY[i] = 0;
-        g_traindirection[i] = 'N'; // default to north (will be overwritten by .lvl)
-        g_traindestinationX[i] = 0;
-        g_traindestinationY[i] = 0;
-        g_trainSpawnTick[i] = 0;
-    }
 }
