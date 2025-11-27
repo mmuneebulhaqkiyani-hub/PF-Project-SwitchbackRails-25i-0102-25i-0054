@@ -3,8 +3,7 @@
 #include "grid.h"
 #include "switches.h"
 #include <cstdlib>
-#include <iostream>
-using namespace std;
+
 
 // ============================================================================
 // TRAINS.CPP - Train logic
@@ -36,7 +35,19 @@ void spawnTrainsForTick() {
 // ----------------------------------------------------------------------------
 // Compute next position/direction from current tile and rules.
 // ----------------------------------------------------------------------------
+
+static void getDeltaForDirection(int dir, int &dx, int &dy) {
+    dx = 0;
+    dy = 0;
+    switch (dir) {
+      case 0: dy = -1; break;  // up
+      case 1: dx =  1; break;  // right
+      case 2: dy =  1; break;  // down
+      case 3: dx = -1; break;  // left
+    }
+}
 bool determineNextPosition() {
+    return true; //this is gonna be placeholder for now we will move to thi later
 }
 
 // ----------------------------------------------------------------------------
@@ -45,7 +56,9 @@ bool determineNextPosition() {
 // Return new direction after entering the tile.
 // ----------------------------------------------------------------------------
 int getNextDirection() {
+      return 0; // placeholder
 }
+
 
 // ----------------------------------------------------------------------------
 // SMART ROUTING AT CROSSING - Route train to its matched destination
@@ -53,6 +66,7 @@ int getNextDirection() {
 // Choose best direction at '+' toward destination.
 // ----------------------------------------------------------------------------
 int getSmartDirectionAtCrossing() {
+    return 0; // placeholder
 }
 
 // ----------------------------------------------------------------------------
@@ -69,6 +83,23 @@ void determineAllRoutes() {
 // Move trains; resolve collisions and apply effects.
 // ----------------------------------------------------------------------------
 void moveAllTrains() {
+
+    for (int i=0;i<g_numtrains;i++) //ts will checks for all trains
+    {
+        if (!g_trainactive[i]) {
+            continue; // skip inactive trains
+        }
+        int dx,dy;
+        int newx=g_trainX[i] + dx;
+        int newy=g_trainY[i] + dy;
+        if (newx<0 || newx>=g_columns || newy<0 || newy>=g_rows) {
+            //ts means train outt of bounds 
+            g_trainactive[i] = false;//ts suld deactivate the train
+            continue;
+        }
+        g_trainX[i]=newx;
+        g_trainY[i]=newy;
+    }
 }
 
 // ----------------------------------------------------------------------------
