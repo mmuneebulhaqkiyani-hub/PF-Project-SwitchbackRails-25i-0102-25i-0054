@@ -15,6 +15,11 @@
 // ----------------------------------------------------------------------------
 
 void initializeSimulation() {
+//ts will reset all global state
+ initializeSimulationState();
+
+ 
+
 }
 
 // ----------------------------------------------------------------------------
@@ -22,6 +27,9 @@ void initializeSimulation() {
 // ----------------------------------------------------------------------------
 
 void simulateOneTick() {
+
+ spawnTrainsForTick();
+ g_tickNumber++;
 }
 
 // ----------------------------------------------------------------------------
@@ -29,4 +37,7 @@ void simulateOneTick() {
 // ----------------------------------------------------------------------------
 
 bool isSimulationComplete() {
+    //for now we will stop the thing at 50 ticks
+    return (g_tickNumber > 50);
+
 }

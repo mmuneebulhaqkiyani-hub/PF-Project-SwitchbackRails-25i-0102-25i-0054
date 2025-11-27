@@ -107,7 +107,7 @@ bool loadLevelFile() {
                     g_trainSpawnTick[i] = spawnTick;
                     g_trainX[i]= x;
                     g_trainY[i]= y;
-                    g_traindirection[i]=(char)dir;
+                    g_traindirection[i]=dir;
                     g_trainactive[i]= false; // will become true when spawned
 
                     g_numtrains++;

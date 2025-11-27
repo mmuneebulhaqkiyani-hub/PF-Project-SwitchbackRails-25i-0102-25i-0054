@@ -32,7 +32,7 @@
    extern int g_trainY[MaxTrains]; // this says the y position of each train
 // there also should be variable like array that says where thee direction of the train is like north south east west
 // we should use char for that and have it like N S E W. thhis is smart move by me fr. W high iq me lol.
- extern char g_traindirection[MaxTrains]; // this says the direction of each train
+ extern int g_traindirection[MaxTrains]; // this says the direction of each train
  //now for wheteher the train is alive or dead we can use bool array for that and like if the train has spawned in the lobby or not yet
  extern bool g_trainactive[MaxTrains];
  //each train will have o go to some destination so we need arrays for that too

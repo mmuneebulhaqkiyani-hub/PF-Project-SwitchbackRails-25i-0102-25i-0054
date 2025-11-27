@@ -10,7 +10,7 @@
 // ----------------------------------------------------------------------------
 int g_rows = 0; // this the number of rows in the grid
 int g_columns = 0; // this is the number of columns in the grid 
-char g_grid[MaxRows][MaxColumns];  // 2D array representing the grid map
+int g_grid[MaxRows][MaxColumns];  // 2D array representing the grid map
 
 // ----------------------------------------------------------------------------
 // TRAINS
@@ -47,6 +47,7 @@ int g_tickNumber = 0;
 // ----------------------------------------------------------------------------
 void initializeSimulationState() {
     
+    
     g_rows = 0;
     g_columns = 0;
 
@@ -65,7 +66,7 @@ for (int i = 0; i < MaxTrains; i++) {
     g_trainactive[i]=false;
     g_trainX[i]=0;
     g_trainY[i]=0;
-    g_traindirection[i]='N'; // default to north (will be overwritten by .lvl)
+    g_traindirection[i]=0; // default to north (will be overwritten by .lvl)
     g_traindestinationX[i]=0;
     g_traindestinationY[i]=0;
     g_trainSpawnTick[i]=0;

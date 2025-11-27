@@ -22,14 +22,10 @@ using namespace std;
 void spawnTrainsForTick() {
      
     for (int i = 0; i < g_numtrains; i++) {
-
-        // If train is not active yet AND its spawn tick is now:
-        if (!g_trainactive[i] && g_trainSpawnTick[i] == g_tickNumber) {
-
+        // If train is not active yet and its spawn tick is now:
+        if (!g_trainactive[i] && g_trainSpawnTick[i] == g_tickNumber)
+     {
             g_trainactive[i] = true; // activate the train
-
-            // (Optional debug)
-            cout << "Spawning train " << i << " at tick " << g_tickNumber<< " at (" << g_trainX[i] << "," << g_trainY[i]<< ") dir=" << g_traindirection[i]<< "\n";
         }
     }
 
