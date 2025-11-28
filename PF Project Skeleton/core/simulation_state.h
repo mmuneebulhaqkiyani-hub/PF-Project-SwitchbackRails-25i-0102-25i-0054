@@ -42,6 +42,9 @@
  extern int g_traindestinationY[MaxTrains]; // destination y for each train
  extern int g_pastTrainX[MaxTrains]; //using it to store previous position
  extern int g_futureTrainY[MaxTrains];//using it to store next position
+ extern int g_futureTrainX[MaxTrains];//using it to store next position
+ extern bool g_futureTrainActive[MaxTrains]; // to store if planned move is active
+ extern int g_pastTrainY[MaxTrains];//using it to store previous position
 // ---- ------------------------------------------------------------------------
 // SWITCH CONSTANTS
 // ----------------------------------------------------------------------------
