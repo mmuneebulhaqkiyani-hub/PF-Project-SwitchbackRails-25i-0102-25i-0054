@@ -111,22 +111,8 @@ bool loadLevelFile() {
                     g_trainSpawnTick[i] = spawnTick;
                     g_trainX[i]= x;
                     g_trainY[i]= y;
-            //convert direction code to charachters
-                    // 0 for N and 1 = E,2=S,3=W
-                    char dirChar='N';
-                    if (dir==1) 
-                      {
-                        dirChar='E';
-                      }
-                    else if (dir==2) 
-                    {
-                        dirChar='S';
-                    }
-                    else if (dir==3) 
-                    {
-                        dirChar='W';
-                    }
-                    g_traindirection[i]=dirChar;
+           
+                    g_traindirection[i]=dir;
 
                     g_trainactive[i]=false; //will become true when spawne
 
