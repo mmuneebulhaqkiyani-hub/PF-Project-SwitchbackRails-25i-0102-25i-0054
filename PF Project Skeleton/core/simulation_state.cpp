@@ -30,7 +30,11 @@ int g_traindestinationX[MaxTrains];
 int g_traindestinationY[MaxTrains];
 
 int g_pastTrainX[MaxTrains]; //using it to store previous position
+int g_pastTrainY[MaxTrains];//using it to store previous position
 int g_futureTrainY[MaxTrains];//using it to store next
+int g_futureTrainX[MaxTrains];//using it to store next position
+
+bool g_futureTrainActive[MaxTrains]; // to store if planned move is active
 // spawn tick array
 int g_trainSpawnTick[MaxTrains];
 // tick number for simulation

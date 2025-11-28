@@ -32,12 +32,12 @@ void spawnTrainsForTick() {
                 g_trainactive[i]=true;
 
                 // at spawn both will be same they will be udated later
-                g_prevTrainX[i]=g_trainX[i];
-                g_prevTrainY[i]=g_trainY[i];
+                g_pastTrainX[i]=g_trainX[i];
+                g_pastTrainY[i]=g_trainY[i];
 
-                g_plannedTrainX[i]=g_trainX[i];
-                g_plannedTrainY[i]= g_trainY[i];
-                g_plannedTrainActive[i]= true;
+                g_futureTrainX[i]=g_trainX[i];
+                g_futureTrainY[i]= g_trainY[i];
+                g_futureTrainActive[i]= true;
             }
         }
     }
