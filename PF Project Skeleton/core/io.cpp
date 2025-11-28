@@ -35,33 +35,37 @@ bool loadLevelFile() {
     initializeSimulationState();
 
     string line;
-    bool inMap=false;   // are we inside the MAP section?
-    bool inTrainsline=false;   // are we inside TRAINS section
+    bool Mapinside=false;   //are we inside the MAP section?
+    bool inTrainsline=false;   //are we inside TRAINS section ""Train:"
+    bool inSwitchesline=false; //are we inside SWITCHES section "Switches:"
     int row=0;
 
     while (getline(file,line)) {
         // first line map ha?
         if (line=="MAP:") 
         {
-            inMap=true;
+            Mapinside=true;
             continue;
         }
         // leaving switches for now, maybe next step
         if (line=="SWITCHES:") 
         {
-            inMap=false;
+            Mapinside=false;
+            inSwitchesline=true;
+            inTrainsline=false;
             continue;
         }
         // for reading trains section
         if (line=="TRAINS:") 
         {
-            inMap=false;
+            Mapinside=false;
             inTrainsline=true;
+            inSwitchesline=false;
             continue;
         }
 
         //MAP SECTION 
-        if (inMap) {
+        if (Mapinside) {
             // empty lines k liye
             if (line=="") {
                 continue;
@@ -97,9 +101,9 @@ bool loadLevelFile() {
             }
 
             stringstream ss(line);
-            int spawnTick, x, y, dir, color;
+            int spawnTick, x, y, dir,color;
 
-            // try to read 5 integers from the line
+            // this read 5 integers from the line
             if (ss>>spawnTick>>x>>y>>dir>>color) {
                 if (g_numtrains<MaxTrains) {
                     int i=g_numtrains;
@@ -107,8 +111,26 @@ bool loadLevelFile() {
                     g_trainSpawnTick[i] = spawnTick;
                     g_trainX[i]= x;
                     g_trainY[i]= y;
-                    g_traindirection[i]=dir;
-                    g_trainactive[i]= false; // will become true when spawned
+            //convert direction code to charachters
+                    // 0 for N and 1 = E,2=S,3=W
+                    char dirChar='N';
+                    if (dir==1) 
+                      {
+                        dirChar='E';
+                      }
+                    else if (dir==2) 
+                    {
+                        dirChar='S';
+                    }
+                    else if (dir==3) 
+                    {
+                        dirChar='W';
+                    }
+                    g_traindirection[i]=dirChar;
+
+                    g_trainactive[i]=false; //will become true when spawne
+
+                    //color when?
 
                     g_numtrains++;
                 }
@@ -117,10 +139,10 @@ bool loadLevelFile() {
             continue; // done handling this line
         }
 
-        // Any other lines (like NAME:, ROWS:, COLS:) are ignored for now.
+        
     }
 
-    //set grid size
+    //set gridsize
     g_rows=row;
     g_columns=MaxColumns;   // for now do same width/height
 
