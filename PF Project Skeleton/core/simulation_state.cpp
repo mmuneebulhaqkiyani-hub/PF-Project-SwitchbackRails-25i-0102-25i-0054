@@ -31,7 +31,7 @@ int g_traindestinationY[MaxTrains];
 // spawn tick array
 int g_trainSpawnTick[MaxTrains];
 // tick number for simulation
-int g_tickNumber=0;
+int g_currentTickNum=0;
 
 // ############################################################################
 // SWITCHES
@@ -66,7 +66,7 @@ int g_destinationY[MaxDestinations];
 // ############################################################################
 int g_weatherMode=WeatherNormal;// WeatherNormal / WeatherRain / WeatherFog
 int g_randomSeed=0;// seed for deterministic random behaviour
-
+int g_currentick=0;
 
 // ############################################################################
 // METRICS
@@ -108,7 +108,7 @@ void initializeSimulationState() {
 
 // reset trains
 g_numtrains = 0;
-g_tickNumber = 0;
+g_currentTickNum = 0;
 
 for (int i = 0; i < MaxTrains; i++) {
     g_trainactive[i]=false;

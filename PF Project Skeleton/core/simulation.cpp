@@ -29,7 +29,7 @@ void initializeSimulation() {
 void simulateOneTick() {
 
  spawnTrainsForTick();
- g_tickNumber++;
+ g_currentTickNum++;
 }
 
 // ----------------------------------------------------------------------------
@@ -38,6 +38,6 @@ void simulateOneTick() {
 
 bool isSimulationComplete() {
     //for now we will stop the thing at 50 ticks
-    return (g_tickNumber > 50);
+    return (g_currentTickNum > 50);
 
 }

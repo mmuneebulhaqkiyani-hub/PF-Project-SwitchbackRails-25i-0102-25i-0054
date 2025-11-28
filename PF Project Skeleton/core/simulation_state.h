@@ -91,7 +91,7 @@ const int SignalGreen  = 2;
 // ----------------------------------------------------------------------------
 // GLOBAL STATE: TRAINS
 // ----------------------------------------------------------------------------
-extern int g_tickNumber; // this will be  the current simulation tick 
+extern int g_currentTickNum; // this will be  the current simulation tick 
 
 
 // ----------------------------------------------------------------------------

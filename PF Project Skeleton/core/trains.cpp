@@ -20,11 +20,25 @@
 // ----------------------------------------------------------------------------
 void spawnTrainsForTick() {
      
-    for (int i = 0; i < g_numtrains; i++) {
-        // If train is not active yet and its spawn tick is now:
-        if (!g_trainactive[i] && g_trainSpawnTick[i] == g_tickNumber)
-     {
-            g_trainactive[i] = true; // activate the train
+      for (int i=0;i<g_numtrains;i++) 
+    {
+        // if train  not on
+        if (!g_trainactive[i]) 
+        {
+            // check if its spawn tick matches the current tick
+            if (g_trainSpawnTick[i]==g_currentTickNum) 
+            {
+                // activate train
+                g_trainactive[i]=true;
+
+                // at spawn both will be same they will be udated later
+                g_prevTrainX[i]=g_trainX[i];
+                g_prevTrainY[i]=g_trainY[i];
+
+                g_plannedTrainX[i]=g_trainX[i];
+                g_plannedTrainY[i]= g_trainY[i];
+                g_plannedTrainActive[i]= true;
+            }
         }
     }
 
@@ -36,16 +50,6 @@ void spawnTrainsForTick() {
 // Compute next position/direction from current tile and rules.
 // ----------------------------------------------------------------------------
 
-static void getDeltaForDirection(int dir, int &dx, int &dy) {
-    dx = 0;
-    dy = 0;
-    switch (dir) {
-      case 0: dy = -1; break;  // up
-      case 1: dx =  1; break;  // right
-      case 2: dy =  1; break;  // down
-      case 3: dx = -1; break;  // left
-    }
-}
 bool determineNextPosition() {
     return true; //this is gonna be placeholder for now we will move to thi later
 }
