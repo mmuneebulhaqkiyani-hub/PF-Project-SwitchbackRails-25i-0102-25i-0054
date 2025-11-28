@@ -67,7 +67,8 @@ bool loadLevelFile() {
         //MAP SECTION 
         if (Mapinside) {
             // empty lines k liye
-            if (line=="") {
+            if (line=="") 
+            {
                 continue;
             }
 
@@ -95,7 +96,8 @@ bool loadLevelFile() {
         //TRAINS SECTION 
         if (inTrainsline) 
         {
-            if (line=="") {
+            if (line=="") 
+            {
                 // skip empty lines inside TRAINS
                 continue;
             }
@@ -128,8 +130,8 @@ bool loadLevelFile() {
         
     }
     // set grid size from what we actually read
-    g_rows    = row;
-    g_columns = MaxColumns;
+    g_rows= row;
+    g_columns =MaxColumns;
 
  // now weve got to read and save the destinations and switches
     g_numdestinations=0;
@@ -156,7 +158,8 @@ bool loadLevelFile() {
    //gotta do the same for switches too
             if (isSwitchTile(tile)) {
                 int idx = getSwitchIndex(tile);
-                if (idx>=0 && idx<Maxswitches && !switchEncountered[idx]) {
+                if (idx>=0 && idx<Maxswitches && !switchEncountered[idx]) 
+                {
                     switchEncountered[idx] =true;
                     g_switchX[idx]=x;
                     g_switchY[idx]=y;
@@ -165,7 +168,8 @@ bool loadLevelFile() {
         }
     }
 
-    for (int i = 0; i < Maxswitches; i++) {
+    for (int i = 0; i < Maxswitches; i++) 
+    {
         if (switchEncountered[i]) {
             g_Switchcurrent++;
         }
