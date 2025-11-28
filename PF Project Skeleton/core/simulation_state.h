@@ -61,7 +61,10 @@ extern int  g_switchCounterRight[Maxswitches];
 extern int  g_switchCounterDown[Maxswitches];
 extern int  g_switchCounterLeft[Maxswitches];
 extern bool g_switchQueueFlip[Maxswitches];// ts wold be true if switch should flip at end of tick so like if tick is 5 and we queue flip it then at the end of tick 5 it will flip and be effective for tick 6 (hopefully)
-
+extern int g_switchKUp[Maxswitches];
+extern int g_switchKRight[Maxswitches];
+extern int g_switchKDown[Maxswitches];
+extern int g_switchKLeft[Maxswitches];
 
 // ----------------------------------------------------------------------------
 // WEATHER CONSTANTS

@@ -52,11 +52,7 @@ int g_switchCounterUp[Maxswitches];
 int g_switchCounterRight[Maxswitches];
 int g_switchCounterDown[Maxswitches];
 int g_switchCounterLeft[Maxswitches];
-//for the K switches
-int g_switchKUp[Maxswitches];
-int g_switchKRight[Maxswitches];
-int g_switchKDown[Maxswitches];
-int g_switchKLeft[Maxswitches];
+
 // ############################################################################
 // DESTINATION POINTS
 // ############################################################################

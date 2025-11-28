@@ -92,7 +92,7 @@ bool loadLevelFile() {
 
                     g_switchInitState[idx]= initState;
                     g_switchState[idx]=initState;
-
+                    //for the Kswitches thing
                     g_switchKUp[idx]=kup;
                     g_switchKRight[idx]=kright;
                     g_switchKDown[idx]=kdown;
