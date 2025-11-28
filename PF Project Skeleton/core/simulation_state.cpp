@@ -10,7 +10,7 @@
 // ############################################################################
 int g_rows=0; // this the number of rows in the grid
 int g_columns=0; // this is the number of columns in the grid 
-int g_grid[MaxRows][MaxColumns];  // 2D array representing the grid map
+char g_grid[MaxRows][MaxColumns];  // 2D array representing the grid map
 
 // ############################################################################
 // TRAINS
@@ -21,8 +21,8 @@ int g_grid[MaxRows][MaxColumns];  // 2D array representing the grid map
 int g_numtrains=0;  // current number of trains in the simulation (my original var)
 int g_trainX[MaxTrains]; // this says the x position of each train
 int g_trainY[MaxTrains]; // this says the y position of each train
-// direction array (N S E W) cuz i wrote it like this in .h
-char g_traindirection[MaxTrains]; 
+// direction array for the train 0 1 2 3
+int g_traindirection[MaxTrains]; 
 // alive or dead / spawned or not spawned
 bool g_trainactive[MaxTrains];
 // destination arrays (will be used later for stuff maybe)
