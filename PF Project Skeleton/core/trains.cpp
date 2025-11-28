@@ -51,7 +51,57 @@ void spawnTrainsForTick() {
 // ----------------------------------------------------------------------------
 
 bool determineNextPosition() {
+    
+    bool allValid=true;
+    for (int i=0;i< g_numtrains;i++)
+    {
+        if (!g_trainactive[i]) 
+        {
+            continue;
+        }
+        int nextX=g_trainX[i];
+
+
+        int nextY=g_trainY[i];
+        // direction is integer: 0=up,1=right,2=down,3=left
+        if (g_traindirection[i]==0) 
+        {
+            //up
+           
+            nextY--;
+        } 
+        else if (g_traindirection[i]==1) 
+        {   
+            //rigght
+            nextX++;
+        } 
+        else if (g_traindirection[i]==2)
+         
+        {   
+            
+            //down
+            nextY++;
+        } 
+        
+        else if (g_traindirection[i] == 3) 
+        {   
+            
+            //lft
+            nextX--;
+        }
+
+        //ts gonna check if that next tile is valid
+        if (!isInBounds(nextX,nextY)||!isTrackTile(g_grid[nextY][nextX])) 
+        
+        {
+             allValid=false;
+             //this will make g_trainactive[i] = false;
+        }
+
+
+        
     return true; //this is gonna be placeholder for now we will move to thi later
+}
 }
 
 // ----------------------------------------------------------------------------
