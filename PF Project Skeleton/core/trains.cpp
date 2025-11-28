@@ -52,7 +52,7 @@ void spawnTrainsForTick() {
 
 bool determineNextPosition() {
     
-    bool allValid=true;
+    bool allValidcheck=true;
     for (int i=0;i< g_numtrains;i++)
     {
         if (!g_trainactive[i]) 
@@ -94,13 +94,10 @@ bool determineNextPosition() {
         if (!isInBounds(nextX,nextY)||!isTrackTile(g_grid[nextY][nextX])) 
         
         {
-             allValid=false;
+             allValidcheck=false;
              //this will make g_trainactive[i] = false;
         }
-
-
-        
-    return true; //this is gonna be placeholder for now we will move to thi later
+ return allValidcheck;
 }
 }
 
