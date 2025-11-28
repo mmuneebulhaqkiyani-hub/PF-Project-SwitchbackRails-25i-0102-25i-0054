@@ -106,8 +106,75 @@ bool determineNextPosition() {
 // ----------------------------------------------------------------------------
 // Return new direction after entering the tile.
 // ----------------------------------------------------------------------------
-int getNextDirection() {
-      return 0; // placeholder
+int getNextDirection(int currentDir,char tile) {
+     //ths - is for left right movement only 
+    if (tile == '-') 
+    {
+        if (currentDir==1||currentDir==3) 
+        {
+            return currentDir;//ts will make the train thing to keep going horizontally
+        }
+        return -1;//cannot move vertically on '-'
+    }
+    //ts | is for up downnmovement thing only
+    if (tile == '|') 
+    {
+        if (currentDir==0||currentDir==2) 
+        {
+            return currentDir;//keep going vertically
+        }
+        return -1;//cannot move sideways on '|'
+    }
+    //this / is for saying the train to move in curve way
+    if (tile == '/')
+    {
+        if (currentDir==0) 
+        
+        return 1;// up ====> right
+        if (currentDir==1)
+         return 0;// right --> up
+        if (currentDir==2) 
+        return 3;// down --> left
+        if (currentDir==3) 
+        return 2;// left -> down
+
+        return -1;
+    }
+
+    // now fr this \ thing btw we have to use double \ bcz its escape characterthing
+    if (tile == '\\')
+    {
+        if (currentDir==0) 
+        return 3;// up --> left
+        if (currentDir==3) 
+        return 0;// left -> up
+        if (currentDir==2) 
+        return 1;// down ---> right
+        if (currentDir == 1) 
+        return 2;// right ==> down
+
+        return -1;
+    }
+
+    // the + will make the train just go ahead in the same direction
+    if (tile == '+')
+    {
+        return currentDir;
+    }
+    //the A to Z thing is for switvches thing
+    // For now just keep direction (switch logic gonna add ater)
+    if (tile>='A'&&tile<='Z')
+    {
+        return currentDir;
+    }
+  //these aint gonna change the direction so just keep it as it is ig
+    if (tile=='S'||tile=='D'||tile=='=')
+    {
+        return currentDir;
+    }
+
+    return -1;
+      
 }
 
 
