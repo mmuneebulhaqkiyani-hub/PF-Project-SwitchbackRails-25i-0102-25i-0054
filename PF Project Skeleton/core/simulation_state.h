@@ -40,6 +40,8 @@
  extern int g_traindestinationX[MaxTrains]; // destination x for each train
 
  extern int g_traindestinationY[MaxTrains]; // destination y for each train
+ extern int g_pastTrainX[MaxTrains]; //using it to store previous position
+ extern int g_futureTrainY[MaxTrains];//using it to store next position
 // ---- ------------------------------------------------------------------------
 // SWITCH CONSTANTS
 // ----------------------------------------------------------------------------

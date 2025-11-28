@@ -28,6 +28,9 @@ bool g_trainactive[MaxTrains];
 // destination arrays (will be used later for stuff maybe)
 int g_traindestinationX[MaxTrains];
 int g_traindestinationY[MaxTrains];
+
+int g_pastTrainX[MaxTrains]; //using it to store previous position
+int g_futureTrainY[MaxTrains];//using it to store next
 // spawn tick array
 int g_trainSpawnTick[MaxTrains];
 // tick number for simulation
@@ -66,7 +69,7 @@ int g_destinationY[MaxDestinations];
 // ############################################################################
 int g_weatherMode=WeatherNormal;// WeatherNormal / WeatherRain / WeatherFog
 int g_randomSeed=0;// seed for deterministic random behaviour
-int g_currentick=0;
+
 
 // ############################################################################
 // METRICS
