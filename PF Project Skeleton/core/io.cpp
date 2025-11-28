@@ -72,19 +72,19 @@ bool loadLevelFile() {
             }
 
             // length calculation for the row and assigning values.
-            if (row < MaxRows)
+            if (row<MaxRows)
              {
                 int lengthline =(int)line.size();
 
                 // har column k liye for the row
-                for (int i = 0; i < lengthline && i < MaxColumns; i++) 
+                for (int i = 0;i <lengthline && i < MaxColumns;i++) 
                 {
                     g_grid[row][i]=line[i];
                 }
                 // extra columns mai spaces
-                for (int i = lengthline; i < MaxColumns; i++) 
+                for (int i =lengthline; i<MaxColumns; i++) 
                 {
-                    g_grid[row][i] = ' ';
+                    g_grid[row][i]= ' ';
                 }
 
                 row = row + 1;
@@ -108,9 +108,9 @@ bool loadLevelFile() {
                 if (g_numtrains<MaxTrains) {
                     int i=g_numtrains;
 
-                    g_trainSpawnTick[i] = spawnTick;
-                    g_trainX[i]= x;
-                    g_trainY[i]= y;
+                    g_trainSpawnTick[i]=spawnTick;
+                    g_trainX[i]=x;
+                    g_trainY[i]=y;
            
                     g_traindirection[i]=dir;
 
@@ -127,14 +127,54 @@ bool loadLevelFile() {
 
         
     }
+    // set grid size from what we actually read
+    g_rows    = row;
+    g_columns = MaxColumns;
 
-    //set gridsize
-    g_rows=row;
-    g_columns=MaxColumns;   // for now do same width/height
+ // now weve got to read and save the destinations and switches
+    g_numdestinations=0;
+    g_Switchcurrent= 0;
+    //initalizing with false
+    bool switchEncountered[Maxswitches];
+    for (inti=0;i<Maxswitches;i++) {
+        switchEncountered[i]=false;
+    }
+    //checkin the whole grid and marking destinations in another array
+    for (int y=0;y<g_rows;y++) {
+        for (intx=0;x<g_columns;x++) {
+            char tile=g_grid[y][x];
+
+            if (tile=='D') 
+            {
+                if (g_numdestinations <MaxDestinations) 
+                {
+                g_destinationX[g_numdestinations]=x;
+                g_destinationY[g_numdestinations]=y;
+                g_numdestinations++;
+                }
+            }
+   //gotta do the same for switches too
+            if (isSwitchTile(tile)) {
+                int idx = getSwitchIndex(tile);
+                if (idx>=0 && idx<Maxswitches && !switchEncountered[idx]) {
+                    switchEncountered[idx] =true;
+                    g_switchX[idx]=x;
+                    g_switchY[idx]=y;
+                }
+            }
+        }
+    }
+
+    for (int i = 0; i < Maxswitches; i++) {
+        if (switchEncountered[i]) {
+            g_Switchcurrent++;
+        }
+    }
 
     file.close();
     return true;
 }
+
 
 // ----------------------------------------------------------------------------
 // INITIALIZE LOG FILES
