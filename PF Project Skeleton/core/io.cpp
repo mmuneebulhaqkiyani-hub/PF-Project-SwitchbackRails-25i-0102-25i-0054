@@ -63,6 +63,50 @@ bool loadLevelFile() {
             inSwitchesline=false;
             continue;
         }
+        //ts is th switches section
+        if (inSwitchesline) {
+          if (line == "") {
+              continue; // skip empty lines in switches block
+            }
+           // expected line format: A PER_DIR 0 2 2 2 2 STRAIGHT TURN
+            stringstream ss(line);
+            char letter;
+            string mode;
+            int initState;
+            int kup, kright, kdown, kleft;
+            string straightName;
+            string turnName;
+            if (ss >> letter >> mode >> initState >> kup >> kright >> kdown >> kleft >> straightName >> turnName) {
+                int idx = getSwitchIndex(letter);
+                if (idx >= 0 && idx < Maxswitches) 
+                {
+                    // mode: PER_DIR or GLOBAL
+                    if (mode == "GLOBAL") 
+                    {
+                        g_switchMode[idx]=1;
+                    } 
+                    else 
+                    {
+                        g_switchMode[idx]=0;// PER_DIR
+                    }
+
+                    g_switchInitState[idx]= initState;
+                    g_switchState[idx]=initState;
+
+                    g_switchKUp[idx]=kup;
+                    g_switchKRight[idx]=kright;
+                    g_switchKDown[idx]=kdown;
+                    g_switchKLeft[idx]=kleft;
+
+                    g_switchCounterUp[idx]=0;
+                    g_switchCounterRight[idx]=0;
+                    g_switchCounterDown[idx]=0;
+                    g_switchCounterLeft[idx]=0;
+                    g_switchQueueFlip[idx]=false;
+                }
+            }
+            continue;
+        }
 
         //MAP SECTION 
         if (Mapinside) {
@@ -138,12 +182,12 @@ bool loadLevelFile() {
     g_Switchcurrent= 0;
     //initalizing with false
     bool switchEncountered[Maxswitches];
-    for (inti=0;i<Maxswitches;i++) {
+    for (int i=0;i<Maxswitches;i++) {
         switchEncountered[i]=false;
     }
     //checkin the whole grid and marking destinations in another array
     for (int y=0;y<g_rows;y++) {
-        for (intx=0;x<g_columns;x++) {
+        for (int x=0;x<g_columns;x++) {
             char tile=g_grid[y][x];
 
             if (tile=='D') 
@@ -178,6 +222,7 @@ bool loadLevelFile() {
     file.close();
     return true;
 }
+   
 
 
 // ----------------------------------------------------------------------------
