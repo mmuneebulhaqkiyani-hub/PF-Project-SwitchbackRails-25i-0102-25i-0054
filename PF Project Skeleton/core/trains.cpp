@@ -108,7 +108,7 @@ bool determineNextPosition() {
 // ----------------------------------------------------------------------------
 int getNextDirection(int currentDir,char tile) {
      //ths - is for left right movement only 
-    if (tile == '-') 
+    if (tile== '-') 
     {
         if (currentDir==1||currentDir==3) 
         {
@@ -117,7 +117,7 @@ int getNextDirection(int currentDir,char tile) {
         return -1;//cannot move vertically on '-'
     }
     //ts | is for up downnmovement thing only
-    if (tile == '|') 
+    if (tile=='|') 
     {
         if (currentDir==0||currentDir==2) 
         {
@@ -126,7 +126,7 @@ int getNextDirection(int currentDir,char tile) {
         return -1;//cannot move sideways on '|'
     }
     //this / is for saying the train to move in curve way
-    if (tile == '/')
+    if (tile =='/')
     {
         if (currentDir==0) 
         
@@ -183,9 +183,64 @@ int getNextDirection(int currentDir,char tile) {
 // ----------------------------------------------------------------------------
 // Choose best direction at '+' toward destination.
 // ----------------------------------------------------------------------------
-int getSmartDirectionAtCrossing() {
-    return 0; // placeholder
+int getSmartDirectionAtCrossing(int currentDir, int x, int y, int finalgoalX, int finaLgoalY) 
+{ 
+    int bestDir=-1;
+    int bestDist=99999999999;  
+      for (int dir=0;dir<4;dir++)
+    {
+        int newx=x;
+        int newy =y;
+
+        //compute where this direction leads
+        if (dir==0) 
+        {
+            newy=newy-1;   //THIS FOR UP
+        } else if (dir==1) 
+        {
+            nx=nx+1;   //this is for right
+        } else if (dir==2) 
+        {
+            newy= newy+1;   //this is for down
+        } else if (dir==3) 
+        {
+            newx=newx-1;   //this for left
+        }
+
+        //check if the tile exists and is track
+        if (!isInBounds(newx,newy)) 
+        {
+            continue;
+        }
+        if (!isTrackTile(g_grid[newy][newx])) 
+        {
+            continue;
+        }
+
+        //Manhattan distance
+        int dx =newx-goalX;
+        if (dx< 0) 
+        dx =-dx;
+
+        int dy = newy-goalY;
+        if (dy <0) 
+        dy = -dy;
+
+        int dist=dx+dy;
+
+        //pick smallest
+        if (dist<bestDist)
+        {
+            bestDist=dist;
+            bestDir=dir;
+        }
+    }
+
+    return bestDir;   // -1 if none valid
 }
+
+    
+
 
 // ----------------------------------------------------------------------------
 // DETERMINE ALL ROUTES (PHASE 2)
