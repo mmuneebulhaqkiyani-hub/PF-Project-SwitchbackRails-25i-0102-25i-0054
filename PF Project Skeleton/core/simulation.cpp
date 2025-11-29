@@ -15,10 +15,8 @@
 // ----------------------------------------------------------------------------
 
 void initializeSimulation() {
-//ts will reset all global state
- initializeSimulationState();
-
- 
+    g_trainsArrived=0;
+    g_currentTickNum=0;
 
 }
 
