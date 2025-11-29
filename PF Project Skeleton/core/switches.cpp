@@ -134,7 +134,63 @@ void updateSwitchCounters() {
 // Queue flips when counters hit K.
 // ----------------------------------------------------------------------------
 void queueSwitchFlips() {
+    // go through all switches A..Z (0..Maxswitches-1)
+    for (int i=0;i<Maxswitches;i++)
+    {
+        int mode=g_switchMode[i];   //for our reference 0=PER_DIR, 1=GLOBAL
+
+       //dirmode
+        if (mode==0)
+        {
+            bool shouldFlip=false;
+
+            //from up
+            if (g_switchKUp[i]>0 && g_switchCounterUp[i]>=g_switchKUp[i])
+            {
+                shouldFlip=true;
+                g_switchCounterUp[i]=0;  // reset so it can count again
+            }
+
+            //from right
+            if (g_switchKRight[i]>0 && g_switchCounterRight[i]>=g_switchKRight[i])
+            {
+                shouldFlip=true;
+                g_switchCounterRight[i]=0;
+            }
+
+            //from down
+            if (g_switchKDown[i]>0 && g_switchCounterDown[i]>=g_switchKDown[i])
+            {
+                shouldFlip=true;
+                g_switchCounterDown[i]=0;
+            }
+
+            //from left
+            if (g_switchKLeft[i]>0 && g_switchCounterLeft[i]>=g_switchKLeft[i])
+            {
+                shouldFlip=true;
+                g_switchCounterLeft[i]=0;
+            }
+
+            if (shouldFlip)
+            {
+                g_switchQueueFlip[i]=true;
+            }
+        }
+        //global mode
+        else
+        {
+            int K=g_switchKUp[i];  //treat Kup as global K as we did before
+
+            if (K >0 && g_switchCounterUp[i] >= K)
+            {
+                g_switchQueueFlip[i]=true;
+                g_switchCounterUp[i]=0; //reset
+            }
+        }
+    }
 }
+
 
 // ----------------------------------------------------------------------------
 // APPLY DEFERRED FLIPS
