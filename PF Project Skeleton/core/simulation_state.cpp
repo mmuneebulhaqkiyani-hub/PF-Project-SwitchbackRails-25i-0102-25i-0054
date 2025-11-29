@@ -103,21 +103,25 @@ int g_emergencyTicksRemaining=0; // ticks left for halt so we starting from 0
 // ----------------------------------------------------------------------------
 void initializeSimulationState() {
         
-    g_rows = 0;
-    g_columns = 0;
-
+    g_rows=0;
+    g_columns=0;
+     g_trainsArrived=0;
+  
     // clearing da grid with spaces
     for (int r = 0; r < MaxRows; r++) {
-        for (int c = 0; c < MaxColumns; c++) {
+        for (int c=0; c<MaxColumns; c++) {
             g_grid[r][c] = ' ';
         }
     }
 
-// reset trains
+//reset trains
 g_numtrains = 0;
 g_currentTickNum = 0;
+g_weatherMode = 0; // Default to normal weather
+g_emergencyHaltActive = false;
+g_emergencyHaltTicks = 0;
 
-for (int i = 0; i < MaxTrains; i++) {
+for (int i=0; i< MaxTrains;i++) {
     g_trainactive[i]=false;
     g_trainX[i]=0;
     g_trainY[i]=0;
@@ -126,7 +130,20 @@ for (int i = 0; i < MaxTrains; i++) {
     g_traindestinationY[i]=0;
     g_trainSpawnTick[i]=0;
 }
-
+//reset switches
+   for (int i=0; i<Maxswitches;i++) {
+        g_switchMode[i]=0;  // Default mode: PER_DIR
+        g_switchState[i]=0; // Default state: STRAIGHT
+        g_switchKUp[i]=0;
+        g_switchKRight[i]=0;
+        g_switchKDown[i]=0;
+        g_switchKLeft[i]=0;
+        g_switchCounterUp[i]=0;
+        g_switchCounterRight[i]=0;
+        g_switchCounterDown[i]=0;
+        g_switchCounterLeft[i]=0;
+        g_switchQueueFlip[i]=false;
+    }
 
 
 }
