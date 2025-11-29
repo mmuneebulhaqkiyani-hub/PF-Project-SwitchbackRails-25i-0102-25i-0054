@@ -274,7 +274,7 @@ void moveAllTrains() {
         int nextDirection;
         if (tile=='+')
         {
-            // use smart crossing logic based on Manhattan distance
+            // use smart crossing logic based +
             int goalX=g_traindestinationX[i];
             int goalY=g_traindestinationY[i];
 
@@ -283,7 +283,7 @@ void moveAllTrains() {
         }
         else
         {
-            // normal trackbased direction changes likstraight, curves, etc
+            //normal direction changes likstraight, curves, etc
             nextDirection=getNextDirection(dir,tile);
 
 
@@ -301,17 +301,17 @@ void moveAllTrains() {
         int nx = x;
         int ny = y;
 
-        if (nextDirection==0)// up
+        if(nextDirection==0)//up
         {
 
 
             ny=ny-1;
         }
-        else if (nextDirection==1)// right
+        else if (nextDirection==1)//right
         {
             nx=nx+1;
         }
-        else if (nextDirection==2)// down
+        else if (nextDirection==2)//down
         {
             ny=ny+1;
         }
@@ -320,17 +320,17 @@ void moveAllTrains() {
             nx=nx-1;
         }
 
-        // check new position
-        if (!isInBounds(nx,ny))
+        //check new position
+        if(!isInBounds(nx,ny))
         {
             // off the grid tn deactivate the thing
             g_trainactive[i]=false;
             continue;
         }
-        if (!isTrackTile(g_grid[ny][nx]))
+        if(!isTrackTile(g_grid[ny][nx]))
         {
 
-            // not on track then train not active
+            //not on track then train not active
             g_trainactive[i]   =false;
 
 
@@ -356,6 +356,38 @@ void moveAllTrains() {
 // Resolve same-tile, swap, and crossing conflicts.
 // ----------------------------------------------------------------------------
 void detectCollisions() {
+    for (int i=0;i<g_numtrains;i++) //here i will be the 1st train and j will be the 2nd train
+    {
+        if(!g_trainactive[i])
+        {
+            continue;
+        }
+
+        for (int j =i +1;j < g_numtrains;j++) 
+        {
+            if(!g_trainactive[j]) 
+            {
+                continue;
+            }
+
+            //they both on the same tile remove them
+            if (g_futureTrainX[i]==g_futureTrainX[j] && g_futureTrainY[i]==g_futureTrainY[j]) {
+                g_futureTrainActive[i] =false;
+                g_futureTrainActive[j] =false;
+            }
+
+            // when we removed this part they both just pass through each other
+            // swap collision or headon collision
+            bool first_hits_second=(g_futureTrainX[i]==g_trainX[j] && g_futureTrainY[i]==g_trainY[j]);
+            bool second_hits_first=(g_futureTrainX[j]==g_trainX[i] && g_futureTrainY[j]==g_trainY[i]);
+
+            if (first_hits_second && second_hits_first) {
+                g_futureTrainActive[i] =false;
+                g_futureTrainActive[j] =false;
+            }
+        }
+    }
+
 }
 
 // ----------------------------------------------------------------------------
