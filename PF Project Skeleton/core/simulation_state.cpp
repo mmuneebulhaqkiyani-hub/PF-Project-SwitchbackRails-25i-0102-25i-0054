@@ -118,8 +118,10 @@ void initializeSimulationState() {
 g_numtrains = 0;
 g_currentTickNum =0;
 g_weatherMode = 0; //Default to normal weather
-g_emergencyHaltActive = false;
-g_emergencyHaltTicks = 0;
+g_emergencyActive = false;
+g_emergencyCenterX = 0;
+g_emergencyCenterY = 0;
+g_emergencyTicksRemaining = 0;
 
 for (int i=0; i< MaxTrains;i++) {
     g_trainactive[i]=false;

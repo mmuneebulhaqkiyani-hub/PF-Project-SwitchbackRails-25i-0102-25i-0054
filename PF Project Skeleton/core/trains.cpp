@@ -183,11 +183,11 @@ int getNextDirection(int currentDir,char tile) {
 // ----------------------------------------------------------------------------
 // Choose best direction at '+' toward destination.
 // ----------------------------------------------------------------------------
-int getSmartDirectionAtCrossing() {
-    int getSmartDirectionAtCrossing(int currentDir, int x, int y, int finalgoalX, int finaLgoalY) 
+
+int getSmartDirectionAtCrossing(int currentDir, int x, int y, int finalgoalX, int finaLgoalY) 
 { 
     int bestDir=-1;
-    int bestDist=99999999999;  
+    int bestDist=999999;  
       for (int dir=0;dir<4;dir++)
     {
         int newx=x;
@@ -239,7 +239,7 @@ int getSmartDirectionAtCrossing() {
 
     return bestDir;   //-1 if none is valid
 }
-}
+
 
 // ----------------------------------------------------------------------------
 // DETERMINE ALL ROUTES (PHASE 2)
@@ -491,12 +491,12 @@ void detectCollisions() {
 
            
             //HEADON SWAP COLLISION                  
-            bool 1_hits_2 = (g_futureTrainX[i]==g_trainX[j] &&
+            bool i_hits_j = (g_futureTrainX[i]==g_trainX[j] &&
                              g_futureTrainY[i]==g_trainY[j]);
-            bool 2_hits_1 = (g_futureTrainX[j]==g_trainX[i] &&
+            bool j_hits_i = (g_futureTrainX[j]==g_trainX[i] &&
                              g_futureTrainY[j]==g_trainY[i]);
 
-            if (1_hits_2 && 2_hits_1)
+            if (i_hits_j && j_hits_i)
             {
                 //compute Manhattan distance again
                 int dx_i = g_futureTrainX[i] -g_traindestinationX[i];
