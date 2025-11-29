@@ -45,7 +45,8 @@ void simulateOneTick() {
 // ----------------------------------------------------------------------------
 
 bool isSimulationComplete() {
-    //for now we will stop the thing at 50 ticks
-    return (g_currentTickNum > 50);
+return g_trainsArrived>=g_numtrains;
+
+// tis gona return true if all yhetrains have arrived
 
 }
