@@ -198,7 +198,27 @@ void queueSwitchFlips() {
 // Apply queued flips after movement.
 // ----------------------------------------------------------------------------
 void applyDeferredFlips() {
+      for (int i=0;i<Maxswitches;i++)
+    {
+        //Check if the switch has been marked for the flip 
+        if (g_switchQueueFlip[i]) 
+        {
+            //fllippin
+            if (g_switchState[i]==0) //currently STRAIGHT
+            {
+                g_switchState[i]=1;//flip to turn or vice versa
+            }
+            else
+            {
+                g_switchState[i]=0; //flip to straight or vice versa
+            }
+
+            //Reset it as it has been applied
+            g_switchQueueFlip[i]=false;
+        }
+    }
 }
+
 
 // ----------------------------------------------------------------------------
 // UPDATE SIGNAL LIGHTS
