@@ -356,57 +356,7 @@ void moveAllTrains() {
 // Resolve same-tile, swap, and crossing conflicts.
 // ----------------------------------------------------------------------------
 void detectCollisions() {
-    for (int i=0;i<g_numtrains;i++) //here i will be the 1st train and j will be the 2nd train
-    {
-        if(!g_trainactive[i])
-        {
-            continue;
-        }
-          if(!g_futureTrainActive[i]) 
-        {
-            continue;
-        }
-
-        for (int j =i +1;j < g_numtrains;j++) 
-        {
-            if(!g_trainactive[j]) 
-            {
-                continue;
-            }
-              if (!g_futureTrainActive[i]) 
-            {
-            continue;
-            }
-
-            //they both on the same tile remove them
-            if (g_futureTrainX[i]==g_futureTrainX[j] && g_futureTrainY[i]==g_futureTrainY[j]) 
-            {
-                g_futureTrainActive[i] =false;
-                g_futureTrainActive[j] =false;
-            }
-
-            // when we removed this part they both just pass through each other
-            // swap collision or headon collision
-            bool first_hits_second=(g_futureTrainX[i]==g_trainX[j] && g_futureTrainY[i]==g_trainY[j]);
-            bool second_hits_first=(g_futureTrainX[j]==g_trainX[i] && g_futureTrainY[j]==g_trainY[i]);
-
-            if (first_hits_second && second_hits_first) 
-            {
-                g_futureTrainActive[i] =false;
-                g_futureTrainActive[j] =false;
-            }
-        }
-    }
-
-}
-
-// ----------------------------------------------------------------------------
-// CHECK ARRIVALS
-// ----------------------------------------------------------------------------
-// Mark trains that reached destinations.
-// ----------------------------------------------------------------------------
-void checkArrivals() {
-   for (int i=0;i<g_numtrains;i++) 
+    for (int i=0;i<g_numtrains;i++) 
     {
         if(!g_trainactive[i]) 
         {
@@ -485,15 +435,12 @@ void checkArrivals() {
                 continue;
             }
 
-            // -----------------------------------------------------------------
-            // 2) HEAD-ON SWAP COLLISION
-            // i wants to go to j's current position AND
-            // j wants to go to i's current position
-            // -----------------------------------------------------------------
+           
+            //HEADON SWAP COLLISION                  
             bool 1_hits_2 = (g_futureTrainX[i]==g_trainX[j] &&
-                             g_futureTrainY[i]==g_trainY[j]);
-            bool 2_hits_1 = (g_futureTrainX[j]==g_trainX[i] &&
-                             g_futureTrainY[j]==g_trainY[i]);
+                             g_futureTrainY[i] ==g_trainY[j]);
+            bool 2_hits_1 = (g_futureTrainX[j] ==g_trainX[i] &&
+                             g_futureTrainY[j] ==g_trainY[i]);
 
             if (1_hits_2 && 2_hits_1)
             {
@@ -543,6 +490,16 @@ void checkArrivals() {
             }
         }
     }
+
+}
+
+// ----------------------------------------------------------------------------
+// CHECK ARRIVALS
+// ----------------------------------------------------------------------------
+// Mark trains that reached destinations.
+// ----------------------------------------------------------------------------
+void checkArrivals() {
+  
 }
 
 // ----------------------------------------------------------------------------
