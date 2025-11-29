@@ -198,11 +198,11 @@ int getSmartDirectionAtCrossing(int currentDir, int x, int y, int finalgoalX, in
             newy=newy-1;   //THIS FOR UP
         } else if (dir==1) 
         {
-            nx=nx+1;   //this is for right
-        } else if (dir==2) 
+            newx=newx+1;   //this is for right
+        } else if(dir==2) 
         {
             newy= newy+1;   //this is for down
-        } else if (dir==3) 
+        } else if(dir==3) 
         {
             newx=newx-1;   //this for left
         }
