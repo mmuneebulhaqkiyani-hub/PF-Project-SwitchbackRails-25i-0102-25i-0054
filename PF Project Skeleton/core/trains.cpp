@@ -108,7 +108,7 @@ bool determineNextPosition() {
 // ----------------------------------------------------------------------------
 int getNextDirection(int currentDir,char tile) {
      //ths - is for left right movement only 
-    if (tile== '-') 
+    if (tile == '-') 
     {
         if (currentDir==1||currentDir==3) 
         {
@@ -117,7 +117,7 @@ int getNextDirection(int currentDir,char tile) {
         return -1;//cannot move vertically on '-'
     }
     //ts | is for up downnmovement thing only
-    if (tile=='|') 
+    if (tile == '|') 
     {
         if (currentDir==0||currentDir==2) 
         {
@@ -126,11 +126,11 @@ int getNextDirection(int currentDir,char tile) {
         return -1;//cannot move sideways on '|'
     }
     //this / is for saying the train to move in curve way
-    if (tile =='/')
+    if (tile == '/')
     {
         if (currentDir==0) 
         
-        return 1;// up ====> right
+        return 1;// up ====> right     
         if (currentDir==1)
          return 0;// right --> up
         if (currentDir==2) 
@@ -183,64 +183,9 @@ int getNextDirection(int currentDir,char tile) {
 // ----------------------------------------------------------------------------
 // Choose best direction at '+' toward destination.
 // ----------------------------------------------------------------------------
-int getSmartDirectionAtCrossing(int currentDir, int x, int y, int finalgoalX, int finaLgoalY) 
-{ 
-    int bestDir=-1;
-    int bestDist=99999999999;  
-      for (int dir=0;dir<4;dir++)
-    {
-        int newx=x;
-        int newy =y;
-
-        //compute where this direction leads
-        if (dir==0) 
-        {
-            newy=newy-1;   //THIS FOR UP
-        } else if (dir==1) 
-        {
-            newx=newx+1;   //this is for right
-        } else if(dir==2) 
-        {
-            newy= newy+1;   //this is for down
-        } else if(dir==3) 
-        {
-            newx=newx-1;   //this for left
-        }
-
-        //check if the tile exists and is track
-        if (!isInBounds(newx,newy)) 
-        {
-            continue;
-        }
-        if (!isTrackTile(g_grid[newy][newx])) 
-        {
-            continue;
-        }
-
-        //Manhattan distance
-        int dx =newx-goalX;
-        if (dx< 0) 
-        dx =-dx;
-
-        int dy = newy-goalY;
-        if (dy <0) 
-        dy = -dy;
-
-        int dist=dx+dy;
-
-        //pick smallest
-        if (dist<bestDist)
-        {
-            bestDist=dist;
-            bestDir=dir;
-        }
-    }
-
-    return bestDir;   // -1 if none valid
+int getSmartDirectionAtCrossing() {
+    return 0; // placeholder
 }
-
-    
-
 
 // ----------------------------------------------------------------------------
 // DETERMINE ALL ROUTES (PHASE 2)
@@ -248,6 +193,56 @@ int getSmartDirectionAtCrossing(int currentDir, int x, int y, int finalgoalX, in
 // Fill next positions/directions for all trains.
 // ----------------------------------------------------------------------------
 void determineAllRoutes() {
+    //this function is for determining the route for all trains
+      if (g_numdestinations<=0) 
+    {
+        for (int i=0;i<g_numtrains;i++) 
+        {
+            g_traindestinationX[i]=g_trainX[i];
+
+
+
+        
+            g_traindestinationY[i]=g_trainY[i];
+        }
+        return;
+    }
+
+    // For each train, pick the nearest destination
+    for (int i=0;i<g_numtrains; i++) 
+    {
+        int trainX=g_trainX[i];
+        int trainY=g_trainY[i];
+
+
+        int bestIndex=0;
+        int bestDist =999999999999; 
+        // Check all destinations
+        for (int j=0;j<g_numdestinations;j++) 
+        {
+            int destinationX=g_destinationX[j];
+            int destinationY=g_destinationY[j];
+            // Manhattan distance = |trainX - destinationX| + |trainY - destinationY|
+            int dx=trainX-destinationX;
+            if (dx<0)dx=-dx;
+            int dy=trainY-destinationY;
+            if (dy<0)
+            dy=-dy;
+
+            int dist=dx+dy;
+
+
+           if (dist<bestDist) 
+            {
+                bestDist=dist;
+                bestIndex=j;
+            }
+        }
+
+        // ts gonna assign the closest destination to this train
+        g_traindestinationX[i]=g_destinationX[bestIndex];
+        g_traindestinationY[i]=g_destinationY[bestIndex];
+    }
 }
 
 // ----------------------------------------------------------------------------
