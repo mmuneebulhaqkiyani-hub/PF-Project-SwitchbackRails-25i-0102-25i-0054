@@ -251,24 +251,103 @@ void determineAllRoutes() {
 // Move trains; resolve collisions and apply effects.
 // ----------------------------------------------------------------------------
 void moveAllTrains() {
-
-    for (int i=0;i<g_numtrains;i++) //ts will checks for all trains
+    for (int i=0;i<g_numtrains;i++)
     {
-        if (!g_trainactive[i]) {
-            continue; // skip inactive trains
+        if (!g_trainactive[i])
+        {
+            continue;//ts gonn skip inactive trains
         }
-        int dx,dy;
-        getDeltaForDirection(g_traindirection[i], dx, dy);
-        int newx=g_trainX[i] + dx;
-        int newy=g_trainY[i] + dy;
-        if (newx<0 || newx>=g_columns || newy<0 || newy>=g_rows) {
-            //ts means train outt of bounds 
-            g_trainactive[i] = false;//ts suld deactivate the train
+        int x=g_trainX[i];
+        int y =g_trainY[i];
+        int dir= g_traindirection[i];
+
+
+        //ifthe train iz somhow out of bounds then deactivate
+        if (!isInBounds(x,y))
+        {
+            g_trainactive[i]  =false;
             continue;
         }
-        g_trainX[i]=newx;
-        g_trainY[i]=newy;
+
+        char tile=g_grid[y][x];
+        //ts gon   decide next direction
+        int nextDirection;
+        if (tile=='+')
+        {
+            // use smart crossing logic based on Manhattan distance
+            int goalX=g_traindestinationX[i];
+            int goalY=g_traindestinationY[i];
+
+
+            nextDirection=getSmartDirectionAtCrossing(dir,x,y,goalX,goalY);
+        }
+        else
+        {
+            // normal trackbased direction changes likstraight, curves, etc
+            nextDirection=getNextDirection(dir,tile);
+
+
+        }
+
+        // if no valid directionthen the train stops/crashes
+        if (nextDirection==-1)
+        {
+            g_trainactive[i]=false;
+            continue;
+        }
+        // store new direction
+        g_traindirection[i] = nextDirection;
+        //ys gonnado the next position from direction
+        int nx = x;
+        int ny = y;
+
+        if (nextDirection==0)// up
+        {
+
+
+            ny=ny-1;
+        }
+        else if (nextDirection==1)// right
+        {
+            nx=nx+1;
+        }
+        else if (nextDirection==2)// down
+        {
+            ny=ny+1;
+        }
+        else if (nextDirection==3)// left
+        {
+            nx=nx-1;
+        }
+
+        // check new position
+        if (!isInBounds(nx,ny))
+        {
+            // off the grid tn deactivate the thing
+            g_trainactive[i]=false;
+            continue;
+        }
+        if (!isTrackTile(g_grid[ny][nx]))
+        {
+
+            // not on track then train not active
+            g_trainactive[i]   =false;
+
+
+
+            continue;
+        }
+
+        //apply themovements
+        g_trainX[i]=nx;
+        g_trainY[i]=ny;
+
+
+
     }
+
+
+    
 }
 
 // ----------------------------------------------------------------------------
