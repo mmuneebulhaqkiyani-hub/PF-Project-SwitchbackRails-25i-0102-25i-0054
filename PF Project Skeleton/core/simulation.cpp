@@ -28,9 +28,19 @@ void initializeSimulation() {
 
 void simulateOneTick() {
 
- spawnTrainsForTick();
- g_currentTickNum++;
+    spawnTrainsForTick();
+    bool allValid=determineNextPosition();
+    if (!allValid) {
+        return;  //thi gona skip the tick if their are invalid positions
+    }
+    updateSwitchCounters();
+    queueSwitchFlips();
+    detectCollisions();
+    moveAllTrains();
+    checkArrivals();
 }
+
+
 
 // ----------------------------------------------------------------------------
 // CHECK IF SIMULATION IS COMPLETE
