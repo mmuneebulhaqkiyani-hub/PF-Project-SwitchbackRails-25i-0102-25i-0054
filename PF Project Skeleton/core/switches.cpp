@@ -13,6 +13,119 @@
 // Increment counters for trains entering switches.
 // ----------------------------------------------------------------------------
 void updateSwitchCounters() {
+      // go over all trains
+    for (int i=0;i<g_numtrains;i++)
+    {
+        if (!g_trainactive[i])
+        {
+            continue;
+        }
+
+        int x=g_trainX[i];
+        int y=g_trainY[i];
+        if (!isInBounds(x,y))
+        {
+            continue;
+        }
+
+        char tile=g_grid[y][x];
+
+        //not a switch letter (A..Z)
+        if (!isSwitchTile(tile))
+        {
+            continue;
+        }
+        //valid switch index??? 
+        int idx=getSwitchIndex(tile);
+
+        if (idx<0 || idx >=Maxswitches)
+        {
+            continue;
+        }
+
+        //determine entry direction 
+        int pastx=g_pastTrainX[i];
+        int pasty=g_pastTrainY[i];
+
+        int direction=-1;
+
+        if (pasty==y-1) //comparing past y with current y
+        {
+            direction=0; //from up
+        }
+        if (pastx==x+1) 
+        {
+            direction=3; //came from left
+        }
+        if (pasty==y+1) 
+        {
+            direction=2; //from down
+        }
+        if (pastx==x-1) 
+        {
+            direction=1; //from right
+        }
+
+        //this for safety reasons like the train didnt come from any valid direction and was on switch
+        if (direction==-1)
+        {
+            continue;
+        }
+
+     //counter
+        if (g_switchMode[idx]==0) //global k  
+        {
+            if (direction==0)
+            {
+                g_switchCounterUp[idx]++;
+                if (g_switchCounterUp[idx]>=g_switchKUp[idx])
+                {
+                    g_switchQueueFlip[idx]=true;
+                    g_switchCounterUp[idx]=0;
+                }
+            }
+            else if (direction==1)
+            {
+                g_switchCounterRight[idx]++;
+                if (g_switchCounterRight[idx]>=g_switchKRight[idx])
+                {
+                    g_switchQueueFlip[idx]=true;
+                    g_switchCounterRight[idx]=0;
+                }
+            }
+            else if (direction==2)
+            {
+                g_switchCounterDown[idx]++;
+                if (g_switchCounterDown[idx]>=g_switchKDown[idx])
+                {
+                    g_switchQueueFlip[idx]=true;
+                    g_switchCounterDown[idx]=0;
+                }
+            }
+            else if (direction==3)
+            {
+                g_switchCounterLeft[idx]++;
+                if (g_switchCounterLeft[idx]>=g_switchKLeft[idx])
+                {
+                    g_switchQueueFlip[idx]=true;
+                    g_switchCounterLeft[idx]=0;
+                }
+            }
+        }
+
+        //Global k
+        else   
+        {
+            // We using "up" for global k kinda cheating but it works the same
+            g_switchCounterUp[idx]++;
+
+            if (g_switchCounterUp[idx]>=g_switchKUp[idx])
+            {
+                g_switchQueueFlip[idx]=true;
+                g_switchCounterUp[idx]=0;
+            }
+        }
+    }
 }
 
 // ----------------------------------------------------------------------------
