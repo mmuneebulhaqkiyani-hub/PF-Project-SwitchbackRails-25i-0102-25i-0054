@@ -462,7 +462,7 @@ void detectCollisions() {
                 {
                     dfy_j=-dfy_j;
                 }
-                int dist_j = dfx_j + dfy_j;
+                int dist_j=dfx_j+dfy_j;
 
                 if (dist_i>dist_j)
                 {
@@ -492,9 +492,9 @@ void detectCollisions() {
            
             //HEADON SWAP COLLISION                  
             bool 1_hits_2 = (g_futureTrainX[i]==g_trainX[j] &&
-                             g_futureTrainY[i] ==g_trainY[j]);
-            bool 2_hits_1 = (g_futureTrainX[j] ==g_trainX[i] &&
-                             g_futureTrainY[j] ==g_trainY[i]);
+                             g_futureTrainY[i]==g_trainY[j]);
+            bool 2_hits_1 = (g_futureTrainX[j]==g_trainX[i] &&
+                             g_futureTrainY[j]==g_trainY[i]);
 
             if (1_hits_2 && 2_hits_1)
             {
@@ -553,6 +553,18 @@ void detectCollisions() {
 // Mark trains that reached destinations.
 // ----------------------------------------------------------------------------
 void checkArrivals() {
+    for (int i=0;i<g_numtrains;i++) 
+    {
+        if (!g_trainactive[i]) 
+        {
+            continue;
+        }
+        if (g_trainX[i]==g_traindestinationX[i] && g_trainY[i]==g_traindestinationY[i])
+        {
+            g_trainactive[i]=false;   // train arrived so despawn
+            g_trainsArrived++;       //count arrivals 
+        }
+    }
   
 }
 
