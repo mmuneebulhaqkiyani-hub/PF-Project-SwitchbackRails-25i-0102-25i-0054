@@ -222,7 +222,7 @@ void determineAllRoutes() {
         {
             int destinationX=g_destinationX[j];
             int destinationY=g_destinationY[j];
-            // Manhattan distance = |trainX - destinationX| + |trainY - destinationY|
+            // Manhattan distance
             int dx=trainX-destinationX;
             if (dx<0)dx=-dx;
             int dy=trainY-destinationY;
@@ -362,12 +362,20 @@ void detectCollisions() {
         {
             continue;
         }
+          if(!g_futureTrainActive[i]) 
+        {
+            continue;
+        }
 
         for (int j =i +1;j < g_numtrains;j++) 
         {
             if(!g_trainactive[j]) 
             {
                 continue;
+            }
+              if (!g_futureTrainActive[i]) 
+            {
+            continue;
             }
 
             //they both on the same tile remove them
@@ -398,16 +406,141 @@ void detectCollisions() {
 // Mark trains that reached destinations.
 // ----------------------------------------------------------------------------
 void checkArrivals() {
-    for (int i =0;i<g_numtrains;i++) 
+   for (int i=0;i<g_numtrains;i++) 
     {
-        if (!g_trainactive[i]) 
+        if(!g_trainactive[i]) 
         {
             continue;
         }
-        if (g_trainX[i]==g_traindestinationX[i] && g_trainY[i]==g_traindestinationY[i])
+        if(!g_futureTrainActive[i]) 
         {
-            g_trainactive[i] =false;   // train arrived so despawn
-            g_trainsArrived++;       // count arrivals 
+            continue;
+        }
+
+        for (int j=i +1;j <g_numtrains;j++) 
+        {
+            if(!g_trainactive[j]) 
+            {
+                continue;
+            }
+            if (!g_futureTrainActive[j]) 
+            {
+                continue;
+            }
+
+            //SAMESPOT COLLISION
+            //Both trains plan to go to the same tile
+          
+            if (g_futureTrainX[i]==g_futureTrainX[j] &&
+                g_futureTrainY[i]==g_futureTrainY[j])
+            {
+                // compute Manhattan distance for future positions
+                int dfx_i=g_futureTrainX[i]-g_traindestinationX[i];
+                
+                if (dfx_i<0) 
+                {
+                    dfx_i=-dfx_i;
+                }
+                int dfy_i=g_futureTrainY[i]-g_traindestinationY[i];
+                if (dfy_i <0) 
+                {
+                    dfy_i=-dfy_i;
+                }
+                int dist_i=dfx_i + dfy_i;
+
+                int dfx_j=g_futureTrainX[j]-g_traindestinationX[j];
+                if (dfx_j<0) 
+                {
+                    dfx_j=-dfx_j;
+                }
+                int dfy_j=g_futureTrainY[j]-g_traindestinationY[j];
+                if (dfy_j<0) 
+                {
+                    dfy_j=-dfy_j;
+                }
+                int dist_j = dfx_j + dfy_j;
+
+                if (dist_i>dist_j)
+                {
+                    //train 1 is farther from its destination So higher priority
+                    // i moves, j must WAITs
+                    g_futureTrainX[j]=g_trainX[j];
+                    g_futureTrainY[j]=g_trainY[j];
+                    // j remains active (no crash), just doesn't move this tick
+                }
+                else if (dist_j>dist_i)
+                {
+                    // train 2 is farther so higher priority
+                    g_futureTrainX[i] =g_trainX[i];
+                    g_futureTrainY[i]=g_trainY[i];
+                }
+                else
+                {
+                    // equal distance both crash
+                    g_futureTrainActive[i] = false;
+                    g_futureTrainActive[j] = false;
+                }
+
+                
+                continue;
+            }
+
+            // -----------------------------------------------------------------
+            // 2) HEAD-ON SWAP COLLISION
+            // i wants to go to j's current position AND
+            // j wants to go to i's current position
+            // -----------------------------------------------------------------
+            bool 1_hits_2 = (g_futureTrainX[i]==g_trainX[j] &&
+                             g_futureTrainY[i]==g_trainY[j]);
+            bool 2_hits_1 = (g_futureTrainX[j]==g_trainX[i] &&
+                             g_futureTrainY[j]==g_trainY[i]);
+
+            if (1_hits_2 && 2_hits_1)
+            {
+                //compute Manhattan distance again
+                int dx_i = g_futureTrainX[i] -g_traindestinationX[i];
+                if (dx_i<0) 
+                {
+                    dx_i=-dx_i;
+                }
+                int dy_i = g_futureTrainY[i] -g_traindestinationY[i];
+                if (dy_i<0) 
+                {
+                    dy_i=-dy_i;
+                }
+                int dist_i=dx_i+dy_i;
+
+                int dx_j=g_futureTrainX[j]- g_traindestinationX[j];
+                if (dx_j<0) 
+                {
+                    dx_j=-dx_j;
+                }
+                int dy_j=g_futureTrainY[j] -g_traindestinationY[j];
+                if (dy_j<0) 
+                {
+                    dy_j=-dy_j;
+                }
+                int dist_j=dx_j+dy_j;
+
+                if (dist_i>dist_j)
+                {
+                    //same as before t1 farther
+                    g_futureTrainX[j]=g_trainX[j];
+                    g_futureTrainY[j]=g_trainY[j];
+                }
+                else if (dist_j>dist_i)
+                {
+                    //t2 farther
+                    g_futureTrainX[i] =g_trainX[i];
+                    g_futureTrainY[i] =g_trainY[i];
+                }
+                else
+                {
+                    //equal distance  both crash
+                    g_futureTrainActive[i] = false;
+                    g_futureTrainActive[j] = false;
+                }
+            }
         }
     }
 }
