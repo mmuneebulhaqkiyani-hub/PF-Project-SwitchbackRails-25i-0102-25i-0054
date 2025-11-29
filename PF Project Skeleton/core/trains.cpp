@@ -371,7 +371,8 @@ void detectCollisions() {
             }
 
             //they both on the same tile remove them
-            if (g_futureTrainX[i]==g_futureTrainX[j] && g_futureTrainY[i]==g_futureTrainY[j]) {
+            if (g_futureTrainX[i]==g_futureTrainX[j] && g_futureTrainY[i]==g_futureTrainY[j]) 
+            {
                 g_futureTrainActive[i] =false;
                 g_futureTrainActive[j] =false;
             }
@@ -381,7 +382,8 @@ void detectCollisions() {
             bool first_hits_second=(g_futureTrainX[i]==g_trainX[j] && g_futureTrainY[i]==g_trainY[j]);
             bool second_hits_first=(g_futureTrainX[j]==g_trainX[i] && g_futureTrainY[j]==g_trainY[i]);
 
-            if (first_hits_second && second_hits_first) {
+            if (first_hits_second && second_hits_first) 
+            {
                 g_futureTrainActive[i] =false;
                 g_futureTrainActive[j] =false;
             }
@@ -396,6 +398,18 @@ void detectCollisions() {
 // Mark trains that reached destinations.
 // ----------------------------------------------------------------------------
 void checkArrivals() {
+    for (int i =0;i<g_numtrains;i++) 
+    {
+        if (!g_trainactive[i]) 
+        {
+            continue;
+        }
+        if (g_trainX[i]==g_traindestinationX[i] && g_trainY[i]==g_traindestinationY[i])
+        {
+            g_trainactive[i] =false;   // train arrived so despawn
+            g_trainsArrived++;       // count arrivals 
+        }
+    }
 }
 
 // ----------------------------------------------------------------------------
