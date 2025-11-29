@@ -116,8 +116,8 @@ void initializeSimulationState() {
 
 //reset trains
 g_numtrains = 0;
-g_currentTickNum = 0;
-g_weatherMode = 0; // Default to normal weather
+g_currentTickNum =0;
+g_weatherMode = 0; //Default to normal weather
 g_emergencyHaltActive = false;
 g_emergencyHaltTicks = 0;
 
