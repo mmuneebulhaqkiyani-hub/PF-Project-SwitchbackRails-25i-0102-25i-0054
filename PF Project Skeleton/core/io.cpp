@@ -8,7 +8,7 @@
 #include <cstring>
 #include <cstdio>
 #include <cstdlib>
-#include <sstream>   // <-- needed for stringstream
+#include <sstream>   // needed for stringstream
 
 using namespace std;
 
@@ -21,15 +21,17 @@ using namespace std;
 // ----------------------------------------------------------------------------
 // Load a .lvl file into global state.
 // ----------------------------------------------------------------------------
-bool loadLevelFile() {
-    // hard coding it for now ,we'll deal with it later
-    ifstream file("data/levels/easy_level.lvl");
-    if (!file.is_open()) {
-        cout << "LEVEL FILE FAILED TO OPEN!" << endl;
+
+bool loadLevelFile(const char* filename) {
+ 
+      ifstream file(filename);
+    if (!file.is_open()) 
+    {
+        cout <<"LEVEL FILE FAILED TO OPEN: "<< filename<<endl;
         return false;
-    }
-    else {
-        cout<<"LEVEL FILE OPENED SUCCESSFULLY!"<<endl;
+    } else 
+    {
+        cout <<"LEVEL FILE OPENED SUCCESSFULLY: "<<filename<<endl;
     }
 
     initializeSimulationState();
@@ -162,7 +164,7 @@ bool loadLevelFile() {
 
                     g_trainactive[i]=false; //will become true when spawne
 
-                    //color when?
+                    g_trainColor[i]=color;
 
                     g_numtrains++;
                 }

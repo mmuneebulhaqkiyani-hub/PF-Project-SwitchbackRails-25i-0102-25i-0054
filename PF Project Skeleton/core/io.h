@@ -9,7 +9,7 @@
 // LEVEL LOADING
 // ----------------------------------------------------------------------------
 // Load a .lvl file.
-bool loadLevelFile(int x );
+bool loadLevelFile(const char* filename);
 
 // ----------------------------------------------------------------------------
 // LOGGING

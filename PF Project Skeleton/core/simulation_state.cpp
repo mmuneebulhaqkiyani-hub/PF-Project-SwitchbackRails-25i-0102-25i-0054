@@ -1,5 +1,4 @@
 #include "simulation_state.h"
-#include <cstring>
 
 // ============================================================================
 // SIMULATION_STATE.CPP - Global state definitions
@@ -8,144 +7,155 @@
 // ############################################################################
 // GRID
 // ############################################################################
-int g_rows=0; // this the number of rows in the grid
-int g_columns=0; // this is the number of columns in the grid 
-char g_grid[MaxRows][MaxColumns];  // 2D array representing the grid map
+int g_rows=0;
+int g_columns=0;
+char g_grid[MaxRows][MaxColumns];
 
 // ############################################################################
 // TRAINS
-
 // ############################################################################
-
-// using the exact variable names i wrote in the .h file so nothing breaks
-int g_numtrains=0;  // current number of trains in the simulation (my original var)
-int g_trainX[MaxTrains]; // this says the x position of each train
-int g_trainY[MaxTrains]; // this says the y position of each train
-// direction array for the train 0 1 2 3
-int g_traindirection[MaxTrains]; 
-// alive or dead / spawned or not spawned
+int g_numtrains=0;
+int g_trainX[MaxTrains];
+int g_trainY[MaxTrains];
+int g_traindirection[MaxTrains];
 bool g_trainactive[MaxTrains];
-// destination arrays (will be used later for stuff maybe)
+
 int g_traindestinationX[MaxTrains];
-int g_traindestinationY[MaxTrains];
+int  g_traindestinationY[MaxTrains];
 
-int g_pastTrainX[MaxTrains]; //using it to store previous position
-int g_pastTrainY[MaxTrains];//using it to store previous position
-int g_futureTrainY[MaxTrains];//using it to store next
-int g_futureTrainX[MaxTrains];//using it to store next position
+int  g_pastTrainX[MaxTrains];
+int  g_pastTrainY[MaxTrains];
+int  g_futureTrainX[MaxTrains];
+int  g_futureTrainY[MaxTrains];
+bool g_futureTrainActive[MaxTrains];
 
-bool g_futureTrainActive[MaxTrains]; // to store if planned move is active
-// spawn tick array
-int g_trainSpawnTick[MaxTrains];
-// tick number for simulation
-int g_currentTickNum=0;
+int  g_trainSpawnTick[MaxTrains];
+int  g_trainColor[MaxTrains];      
+
+int  g_currentTickNum=0;
 
 // ############################################################################
 // SWITCHES
 // ############################################################################
-   //filling it because we will work on it tomorrow (DONE FILLINGGGG)
-int g_switchState[Maxswitches];// current state (0 = straight, 1 = turn)
-int g_switchInitState[Maxswitches];// initial state from level file
-int g_switchMode[Maxswitches];// 0 = PER_DIR, 1 = GLOBAL
- // switch direction arrays
-int g_switchKUp[Maxswitches];
-int g_switchKRight[Maxswitches];
+int  g_switchState[Maxswitches];
+int  g_switchInitState[Maxswitches];
+int  g_switchMode[Maxswitches];
 
-int g_switchKDown[Maxswitches];
+int  g_switchKUp[Maxswitches];
+int  g_switchKRight[Maxswitches];
+int  g_switchKDown[Maxswitches];
+int  g_switchKLeft[Maxswitches];
 
-int g_switchKLeft[Maxswitches];
-  //their counters too
-int g_switchCounterUp[Maxswitches];
-int g_switchCounterRight[Maxswitches];
-int g_switchCounterDown[Maxswitches];
-int g_switchCounterLeft[Maxswitches];
+int  g_switchCounterUp[Maxswitches];
+int  g_switchCounterRight[Maxswitches];
+int  g_switchCounterDown[Maxswitches];
+int  g_switchCounterLeft[Maxswitches];
+
+int  g_Switchcurrent=0;          // *** DEFINITION LIVES HERE ***
+int  g_switchX[Maxswitches];       // *** AND HERE ***
+int  g_switchY[Maxswitches];
+bool g_switchQueueFlip[Maxswitches];
 
 // ############################################################################
 // DESTINATION POINTS
 // ############################################################################
-int g_numdestinations = 0;// how many destination tiles in the map
+int g_numdestinations=0;
 int g_destinationX[MaxDestinations];
 int g_destinationY[MaxDestinations];
-
 
 // ############################################################################
 // SIMULATION PARAMETERS
 // ############################################################################
-int g_weatherMode=WeatherNormal;// WeatherNormal / WeatherRain / WeatherFog
-int g_randomSeed=0;// seed for deterministic random behaviour
-
+int g_weatherMode=WeatherNormal;
+int g_randomSeed=0;
 
 // ############################################################################
 // METRICS
 // ############################################################################
-int g_totalTicksRun= 0;// how many ticks ran in the simulation
-int g_trainsArrived=0;// trains that reached destination
-int g_trainsCrashed= 0;// trains that crashed
-
+int g_totalTicksRun=0;
+int g_trainsArrived=0;
+int g_trainsCrashed=0;
 
 // ############################################################################
 // EMERGENCY HALT
 // ############################################################################
-bool  g_emergencyActive=false;// true if emergency halt zone is active
-
-int g_emergencyCenterX=0;// center x of 3x3 emergency zone
-int g_emergencyCenterY=0;// center y of 3x3 emergency zone
-int g_emergencyTicksRemaining=0; // ticks left for halt so we starting from 0
-
+bool g_emergencyActive=false;
+int  g_emergencyCenterX=0;
+int  g_emergencyCenterY=0;
+int  g_emergencyTicksRemaining=0;
 
 // ============================================================================
 // INITIALIZE SIMULATION STATE
 // ============================================================================
-// ----------------------------------------------------------------------------
-// Resets all global simulation state.
-// ----------------------------------------------------------------------------
-// Called before loading a new level.
-// ----------------------------------------------------------------------------
 void initializeSimulationState() {
-        
-    g_rows=0;
-    g_columns=0;
-     g_trainsArrived=0;
-  
-    // clearing da grid with spaces
-    for (int r = 0; r < MaxRows; r++) {
-        for (int c=0; c<MaxColumns; c++) {
+    // Grid
+    g_rows= 0;
+    g_columns= 0;
+    for (int r=0;r< MaxRows;r++) {
+        for (int c=0;c< MaxColumns;c++) {
             g_grid[r][c] = ' ';
         }
     }
 
-//reset trains
-g_numtrains = 0;
-g_currentTickNum =0;
-g_weatherMode = 0; //Default to normal weather
-g_emergencyActive = false;
-g_emergencyCenterX = 0;
-g_emergencyCenterY = 0;
-g_emergencyTicksRemaining = 0;
+    // Trains
+    g_numtrains= 0;
+    g_currentTickNum= 0;
+    g_totalTicksRun= 0;
+    g_trainsArrived= 0;
+    g_trainsCrashed= 0;
+    for (int i=0;i< MaxTrains;i++) {
+        g_trainactive[i]= false;
+        g_trainX[i]=0;
+        g_trainY[i]= 0;
+        g_traindirection[i]=0;
+        g_traindestinationX[i]=0;
+        g_traindestinationY[i]=0;
+        g_pastTrainX[i]=0;
+        g_pastTrainY[i]=0;
+        g_futureTrainX[i]=0;
+        g_futureTrainY[i]=0;
+        g_futureTrainActive[i] = false;
+        g_trainSpawnTick[i]=0;
+        g_trainColor[i]=0;
+    }
 
-for (int i=0; i< MaxTrains;i++) {
-    g_trainactive[i]=false;
-    g_trainX[i]=0;
-    g_trainY[i]=0;
-    g_traindirection[i]=0; // default to north (will be overwritten by .lvl)
-    g_traindestinationX[i]=0;
-    g_traindestinationY[i]=0;
-    g_trainSpawnTick[i]=0;
-}
-//reset switches
-   for (int i=0; i<Maxswitches;i++) {
-        g_switchMode[i]=0;  // Default mode: PER_DIR
-        g_switchState[i]=0; // Default state: STRAIGHT
-        g_switchKUp[i]=0;
+    // Switches
+    g_Switchcurrent = 0;
+    for (int i = 0; i < Maxswitches; i++) {
+        g_switchMode[i]=0;   // PER_DIR
+        g_switchState[i]=0;   // STRAIGHT
+        g_switchInitState[i]=0;
+
+        g_switchKUp[i]= 0;
         g_switchKRight[i]=0;
         g_switchKDown[i]=0;
         g_switchKLeft[i]=0;
+
         g_switchCounterUp[i]=0;
         g_switchCounterRight[i]=0;
         g_switchCounterDown[i]=0;
         g_switchCounterLeft[i]=0;
-        g_switchQueueFlip[i]=false;
+
+        g_switchQueueFlip[i]   = false;
+
+        g_switchX[i]=-1;  // "no switch here" sentinel
+        g_switchY[i]=-1;
     }
 
+    // Destinations
+    g_numdestinations = 0;
+    for (int i =0;i< MaxDestinations;i++) {
+        g_destinationX[i] =0;
+        g_destinationY[i] = 0;
+    }
 
+    // Weather & randomness
+    g_weatherMode = WeatherNormal;
+    g_randomSeed= 0;
+
+    // Emergency halt
+    g_emergencyActive= false;
+    g_emergencyCenterX= 0;
+    g_emergencyCenterY= 0;
+    g_emergencyTicksRemaining= 0;
 }

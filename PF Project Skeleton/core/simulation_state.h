@@ -45,6 +45,7 @@
  extern int g_futureTrainX[MaxTrains];//using it to store next position
  extern bool g_futureTrainActive[MaxTrains]; // to store if planned move is active
  extern int g_pastTrainY[MaxTrains];//using it to store previous position
+ extern int g_trainColor[MaxTrains]; // color of each train
 // ---- ------------------------------------------------------------------------
 // SWITCH CONSTANTS
 // ----------------------------------------------------------------------------
