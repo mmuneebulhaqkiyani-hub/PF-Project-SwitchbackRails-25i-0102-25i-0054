@@ -116,6 +116,72 @@ bool loadLevelFile(const char* filename) {
             string turnName;
              // only the first 7 tokens r usefukl
             if (ss>>letter>>mode>>initState>>kup>>kright>>kdown>>kleft)
+            {
+                int idx=getSwitchIndex(letter);
+                if (idx>=0 && idx<Maxswitches)
+                {
+
+                    if (mode=="GLOBAL")
+                    {
+                        g_switchMode[idx]=1;
+                    }
+                    else
+                    {
+
+
+                        g_switchMode[idx]=0;// per-dir
+                    }
+
+                    g_switchInitState[idx]=initState;
+                    g_switchState[idx]=initState;
+                    g_switchKUp[idx]=kup;
+
+
+
+                    g_switchKRight[idx]=kright;
+                    g_switchKDown[idx]=kdown;
+                    g_switchKLeft[idx]=kleft;
+                    g_switchCounterUp[idx]=0;
+                    g_switchCounterRight[idx]=0;
+                    g_switchCounterDown[idx]=0;
+                    g_switchCounterLeft[idx]=0;
+
+
+
+
+                    g_switchQueueFlip[idx]=false;
+                }
+            }
+
+
+            continue;
+        }
+        //map section now
+
+        if (Mapinside)
+        {
+
+            if (row<MaxRows)
+            {
+                int lengthline=(int)line.size();
+                if (lengthline>maxColumnsInMap)
+                {
+                    maxColumnsInMap=lengthline;
+                }
+                for (int i=0;i<lengthline&&i<MaxColumns;i++)
+                {
+                    g_grid[row][i]=line[i];
+                }
+                for (int i=lengthline;i<MaxColumns;i++)
+                {
+                    g_grid[row][i]=' ';
+                }
+
+                row++;
+            }
+            continue;
+        }
+
         // first line map ha?
         if (line=="MAP:") 
         {
