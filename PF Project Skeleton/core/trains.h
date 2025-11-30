@@ -24,7 +24,7 @@ bool determineNextPosition();
 int getNextDirection(int currentDir,char tile);
 
 // Choose best direction at a crossing.
-int getSmartDirectionAtCrossing(int currentDir,int x,int y,int goalX,int goalY);
+int getSmartDirectionAtCrossing(int currentDir,int x,int y,int finalgoalX,int finalgoalY);
 
 // ----------------------------------------------------------------------------
 // TRAIN MOVEMENT

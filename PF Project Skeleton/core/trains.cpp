@@ -219,11 +219,11 @@ int getSmartDirectionAtCrossing(int currentDir, int x, int y, int finalgoalX, in
         }
 
         //Manhattan distance
-        int dx =newx-goalX;
+        int dx =newx-finalgoalX;
         if (dx< 0) 
         dx =-dx;
 
-        int dy = newy-goalY;
+        int dy = newy-finalgoalY;
         if (dy <0) 
         dy = -dy;
 
