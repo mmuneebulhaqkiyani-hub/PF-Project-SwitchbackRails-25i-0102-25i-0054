@@ -28,7 +28,7 @@ static void printGridToTerminal() {
         if (!isInBounds(x, y)) {
             continue;
         }
-        rows[y][x] = 't';
+        rows[y][x] = 'O';
     }
 
     for (int y = 0; y < g_rows; y++) {
