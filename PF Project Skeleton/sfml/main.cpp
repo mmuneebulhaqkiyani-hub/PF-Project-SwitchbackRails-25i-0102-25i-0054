@@ -6,42 +6,45 @@
 
 #include <iostream>
 #include <string>
-#include <vector>
+#include <unistd.h>  //for usleep()
 
 using namespace std;
 
-// Print current grid to terminal once per tick 
+// Printing the grid to terminal
 static void printGridToTerminal() {
-    std::vector<std::string> rows(g_rows, std::string(g_columns, ' '));
-    for (int y=0; y< g_rows; y++) {
-        for (int x =0;x<g_columns; x++) {
-            rows[y][x] =g_grid[y][x];
-        }
-    }
+    for (int y=0;y<g_rows;y++) {
+        for (int x=0;x<g_columns;x++) {
+            //STARTING
+            char c=g_grid[y][x];
 
-    for (int i = 0; i < g_numtrains; i++) {
-        if (!g_trainactive[i]) {
-            continue;
-        }
-        int x = g_trainX[i];
-        int y = g_trainY[i];
-        if (!isInBounds(x, y)) {
-            continue;
-        }
-        rows[y][x] = 'O';
-    }
+            //Check if any active train
+            for (int i=0;i<g_numtrains;i++) {
+                if (!g_trainactive[i]) {
+                    continue;
+                }
+                if (g_trainX[i]==x&& g_trainY[i]== y &&isInBounds(x, y)) {
+                    c = 'O';//O IS TRAIN
+                    break;  
+                }
+            }
 
-    for (int y = 0; y < g_rows; y++) {
-        cout << rows[y] << "\n";
+            cout<<c;
+        }
+        cout <<"\n";
     }
 }
 
 static void clearScreen() {
-    cout << "\033[2J\033[H";
+#if defined(_WIN32)
+    std::system("cls");  //widow
+#else
+    std::system("clear"); //linux or khatara ubuntu
+#endif
 }
 
+
 int main(int argc, char** argv) {
-    // Need a level file path
+    //loading the file finally
     if (argc < 2) {
         cout << "TRY THIS:\n";
         cout << "  ./switchback_rails data/levels/easy_level.lvl\n";
@@ -51,7 +54,7 @@ int main(int argc, char** argv) {
         return 1;
     }
 
-    const char* levelPath = argv[1];
+    const char* levelPath=argv[1];
 
     if (!loadLevelFile(levelPath)) {
         cerr << "Failed to load level file: "<<levelPath<<"\n";
@@ -60,10 +63,10 @@ int main(int argc, char** argv) {
 
     initializeSimulation();
 
-    const int MAX_TICKS = 100000; // safety cap
+    const int MAX_TICKS=99999; 
 
     clearScreen();
-    cout << "Tick: " << g_currentTickNum << "\n";
+    cout << "Tick: "<< g_currentTickNum << "\n";
     printGridToTerminal();
 
     while (true) {
@@ -74,8 +77,10 @@ int main(int argc, char** argv) {
         simulateOneTick();
 
         clearScreen();
-        cout << "Tick: " << g_currentTickNum << "\n";
+        cout << "Tick: "<< g_currentTickNum<< "\n";
         printGridToTerminal();
+        usleep(1000000); //0.1 second delay
+        
     }
 
     cout << "Simulation finished.\n";
