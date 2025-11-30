@@ -23,9 +23,9 @@ using namespace std;
 // ----------------------------------------------------------------------------
 
 bool loadLevelFile(const char* filename) {
- 
+
       ifstream file(filename);
-    if (!file.is_open()) 
+    if (!file.is_open())
     {
         cout <<"LEVEL FILE FAILED TO OPEN: "<< filename<<endl;
         return false;
@@ -41,6 +41,7 @@ bool loadLevelFile(const char* filename) {
     bool inTrainsline=false;   //are we inside TRAINS section ""Train:"
     bool inSwitchesline=false; //are we inside SWITCHES section "Switches:"
     int row=0;
+    int maxColumnsInMap = 0;
 
     while (getline(file,line)) {
         // first line map ha?
@@ -119,17 +120,20 @@ bool loadLevelFile(const char* filename) {
             }
 
             // length calculation for the row and assigning values.
-            if (row<MaxRows)
+            if (row < MaxRows)
              {
                 int lengthline =(int)line.size();
+                if (lengthline > maxColumnsInMap) {
+                    maxColumnsInMap = lengthline;
+                }
 
                 // har column k liye for the row
-                for (int i = 0;i <lengthline && i < MaxColumns;i++) 
+                for (int i = 0;i <lengthline && i < MaxColumns;i++)
                 {
                     g_grid[row][i]=line[i];
                 }
                 // extra columns mai spaces
-                for (int i =lengthline; i<MaxColumns; i++) 
+                for (int i =lengthline; i<MaxColumns; i++)
                 {
                     g_grid[row][i]= ' ';
                 }
@@ -177,7 +181,7 @@ bool loadLevelFile(const char* filename) {
     }
     // set grid size from what we actually read
     g_rows= row;
-    g_columns =MaxColumns;
+    g_columns = (maxColumnsInMap > 0) ? maxColumnsInMap : MaxColumns;
 
  // now weve got to read and save the destinations and switches
     g_numdestinations=0;

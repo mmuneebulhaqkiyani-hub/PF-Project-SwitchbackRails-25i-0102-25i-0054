@@ -13,6 +13,17 @@
 
 // Previous positions (to detect switch entry).
 
+static void markTrainCrash(int idx) {
+    if (idx < 0 || idx >= MaxTrains) {
+        return;
+    }
+    if (g_futureTrainActive[idx]) {
+        g_futureTrainActive[idx] = false;
+        g_trainactive[idx] = false;
+        g_trainsCrashed++;
+    }
+}
+
 // ----------------------------------------------------------------------------
 // SPAWN TRAINS FOR CURRENT TICK
 // ----------------------------------------------------------------------------
@@ -51,54 +62,97 @@ void spawnTrainsForTick() {
 // ----------------------------------------------------------------------------
 
 bool determineNextPosition() {
-    
-    bool allValidcheck=true;
-    for (int i=0;i< g_numtrains;i++)
+
+    bool allValidcheck = true;
+    for (int i = 0; i < g_numtrains; i++)
     {
-        if (!g_trainactive[i]) 
+        g_futureTrainActive[i] = false;
+        if (!g_trainactive[i])
         {
             continue;
         }
-        int nextX=g_trainX[i];
 
+        // store where the train was before planning this tick
+        g_pastTrainX[i] = g_trainX[i];
+        g_pastTrainY[i] = g_trainY[i];
 
-        int nextY=g_trainY[i];
-        // direction is integer: 0=up,1=right,2=down,3=left
-        if (g_traindirection[i]==0) 
-        {
-            //up
-           
-            nextY--;
-        } 
-        else if (g_traindirection[i]==1) 
-        {   
-            //rigght
-            nextX++;
-        } 
-        else if (g_traindirection[i]==2)
-         
-        {   
-            
-            //down
-            nextY++;
-        } 
-        
-        else if (g_traindirection[i] == 3) 
-        {   
-            
-            //lft
-            nextX--;
+        int currentX = g_trainX[i];
+        int currentY = g_trainY[i];
+
+        g_futureTrainX[i] = currentX;
+        g_futureTrainY[i] = currentY;
+        g_futureTrainActive[i] = true;
+
+        char tile = g_grid[currentY][currentX];
+
+        // safety buffer: stay in place for one tick
+        if (tile == '=') {
+            continue;
         }
 
-        //ts gonna check if that next tile is valid
-        if (!isInBounds(nextX,nextY)||!isTrackTile(g_grid[nextY][nextX])) 
-        
+        int nextDirection = -1;
+        if (tile == '+')
         {
-             allValidcheck=false;
-             //this will make g_trainactive[i] = false;
+            int goalX = g_traindestinationX[i];
+            int goalY = g_traindestinationY[i];
+            nextDirection = getSmartDirectionAtCrossing(g_traindirection[i], currentX, currentY, goalX, goalY);
+        }
+        else if (isSwitchTile(tile))
+        {
+            int idx = getSwitchIndex(tile);
+            int state = (idx >= 0 && idx < Maxswitches) ? g_switchState[idx] : 0;
+            if (state == 0) {
+                nextDirection = g_traindirection[i];
+            } else {
+                // simple turn: rotate 90 degrees to the right for deterministic behaviour
+                nextDirection = (g_traindirection[i] + 1) % 4;
+            }
+        }
+        else
+        {
+            nextDirection = getNextDirection(g_traindirection[i], tile);
         }
 
-} return allValidcheck;
+        if (nextDirection == -1)
+        {
+            allValidcheck = false;
+            markTrainCrash(i);
+            continue;
+        }
+
+        // store new direction now so collisions know the intent
+        g_traindirection[i] = nextDirection;
+
+        int nx = currentX;
+        int ny = currentY;
+        if (nextDirection == 0)
+        {
+            ny = ny - 1;
+        }
+        else if (nextDirection == 1)
+        {
+            nx = nx + 1;
+        }
+        else if (nextDirection == 2)
+        {
+            ny = ny + 1;
+        }
+        else if (nextDirection == 3)
+        {
+            nx = nx - 1;
+        }
+
+        if (!isInBounds(nx, ny) || !isTrackTile(g_grid[ny][nx]))
+        {
+            allValidcheck = false;
+            markTrainCrash(i);
+            continue;
+        }
+
+        g_futureTrainX[i] = nx;
+        g_futureTrainY[i] = ny;
+    }
+    return allValidcheck;
 }
 
 // ----------------------------------------------------------------------------
@@ -318,97 +372,18 @@ void moveAllTrains() {
         {
             continue;//ts gonn skip inactive trains
         }
-        int x=g_trainX[i];
-        int y =g_trainY[i];
-        int dir= g_traindirection[i];
-
-
-        //ifthe train iz somhow out of bounds then deactivate
-        if (!isInBounds(x,y))
+        if (!g_futureTrainActive[i])
         {
-            g_trainactive[i]  =false;
+            g_trainactive[i] = false;
             continue;
         }
 
-        char tile=g_grid[y][x];
-        //ts gon   decide next direction
-        int nextDirection;
-        if (tile=='+')
-        {
-            // use smart crossing logic based +
-            int goalX=g_traindestinationX[i];
-            int goalY=g_traindestinationY[i];
-
-
-            nextDirection=getSmartDirectionAtCrossing(dir,x,y,goalX,goalY);
-        }
-        else
-        {
-            //normal direction changes likstraight, curves, etc
-            nextDirection=getNextDirection(dir,tile);
-
-
-        }
-
-        // if no valid directionthen the train stops/crashes
-        if (nextDirection==-1)
-        {
-            g_trainactive[i]=false;
-            continue;
-        }
-        // store new direction
-        g_traindirection[i] = nextDirection;
-        //ys gonnado the next position from direction
-        int nx = x;
-        int ny = y;
-
-        if(nextDirection==0)//up
-        {
-
-
-            ny=ny-1;
-        }
-        else if (nextDirection==1)//right
-        {
-            nx=nx+1;
-        }
-        else if (nextDirection==2)//down
-        {
-            ny=ny+1;
-        }
-        else if (nextDirection==3)// left
-        {
-            nx=nx-1;
-        }
-
-        //check new position
-        if(!isInBounds(nx,ny))
-        {
-            // off the grid tn deactivate the thing
-            g_trainactive[i]=false;
-            continue;
-        }
-        if(!isTrackTile(g_grid[ny][nx]))
-        {
-
-            //not on track then train not active
-            g_trainactive[i]   =false;
-
-
-
-            continue;
-        }
-
-        //apply themovements
-        g_trainX[i]=nx;
-        g_trainY[i]=ny;
-
-
+        g_trainX[i] = g_futureTrainX[i];
+        g_trainY[i] = g_futureTrainY[i];
 
     }
 
 
-    
 }
 
 // ----------------------------------------------------------------------------
@@ -488,8 +463,8 @@ void detectCollisions() {
                 else
                 {
                     // equal distance both crash
-                    g_futureTrainActive[i] = false;
-                    g_futureTrainActive[j] = false;
+                    markTrainCrash(i);
+                    markTrainCrash(j);
                 }
 
                 
@@ -545,8 +520,8 @@ void detectCollisions() {
                 else
                 {
                     //equal distance  both crash
-                    g_futureTrainActive[i] = false;
-                    g_futureTrainActive[j] = false;
+                    markTrainCrash(i);
+                    markTrainCrash(j);
                 }
             }
         }

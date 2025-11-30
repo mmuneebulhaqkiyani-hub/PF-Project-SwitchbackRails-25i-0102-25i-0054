@@ -31,15 +31,12 @@ void simulateOneTick() {
 
     spawnTrainsForTick();
     determineAllRoutes();
-    bool allValid=determineNextPosition();
-    if (!allValid) {
-        return;  //thi gona skip the tick if their are invalid positions
-    }
-    queueSwitchFlips();
-
+    determineNextPosition();
     detectCollisions();
     moveAllTrains();
- 
+    updateSwitchCounters();
+    queueSwitchFlips();
+
     applyDeferredFlips();
     checkArrivals();
 
@@ -47,7 +44,7 @@ void simulateOneTick() {
     logTrainTrace();
     logSwitchState();
     logSignalState();
-g_currentTickNum++;
+    g_currentTickNum++;
     g_totalTicksRun++;
 }
 
@@ -58,7 +55,7 @@ g_currentTickNum++;
 // ----------------------------------------------------------------------------
 
 bool isSimulationComplete() {
-return g_trainsArrived>=g_numtrains;
+return (g_trainsArrived + g_trainsCrashed) >= g_numtrains;
 
 // tis gona return true if all yhetrains have arrived
 

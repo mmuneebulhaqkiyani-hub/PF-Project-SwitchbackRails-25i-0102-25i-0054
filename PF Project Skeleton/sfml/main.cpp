@@ -5,17 +5,63 @@
 #include "../core/grid.h"
 
 #include <iostream>
+#include <string>
+#include <vector>
 
 using namespace std;
 
 // Print current grid to terminal
 static void printGridToTerminal() {
+    // copy grid into a temporary buffer so we can overlay trains
+    std::vector<std::string> rows(g_rows, std::string(g_columns, ' '));
     for (int y = 0; y < g_rows; y++) {
         for (int x = 0; x < g_columns; x++) {
-            cout << g_grid[y][x];
+            rows[y][x] = g_grid[y][x];
         }
-        cout << "\n";
     }
+
+    for (int i = 0; i < g_numtrains; i++) {
+        if (!g_trainactive[i]) {
+            continue;
+        }
+        int x = g_trainX[i];
+        int y = g_trainY[i];
+        if (!isInBounds(x, y)) {
+            continue;
+        }
+
+        char symbol;
+        if (i < 10) {
+            symbol = '0' + i;
+        } else {
+            symbol = 'A' + ((i - 10) % 26);
+        }
+        rows[y][x] = symbol;
+    }
+
+    for (int y = 0; y < g_rows; y++) {
+        cout << rows[y] << "\n";
+    }
+}
+
+static const char* directionName(int dir) {
+    switch (dir) {
+        case 0: return "UP";
+        case 1: return "RIGHT";
+        case 2: return "DOWN";
+        case 3: return "LEFT";
+        default: return "?";
+    }
+}
+
+static const char* trainStateLabel(int idx) {
+    if (g_trainactive[idx]) {
+        return "ACTIVE";
+    }
+    if (g_trainX[idx] == g_traindestinationX[idx] && g_trainY[idx] == g_traindestinationY[idx]) {
+        return "ARRIVED";
+    }
+    return "CRASHED";
 }
 
 int main(int argc, char** argv) {
@@ -44,6 +90,11 @@ int main(int argc, char** argv) {
         cout << "==============================\n";
         cout << "Tick: " << g_currentTickNum << "\n";
         printGridToTerminal();
+        for (int i = 0; i < g_numtrains; i++) {
+            cout << "Train " << i << " : (" << g_trainX[i] << "," << g_trainY[i]
+                 << ") dir=" << directionName(g_traindirection[i])
+                 << " state=" << trainStateLabel(i) << "\n";
+        }
         cout << "==============================\n\n";
 
         if (isSimulationComplete() || g_currentTickNum >= MAX_TICKS) {
