@@ -51,6 +51,14 @@ bool loadLevelFile(const char* filename) {
             expectRows=false;
             continue;
         }
+        //if firt thng is col then the next line is number of columns
+        if (expectCols)
+        {
+            stringstream ss(line);
+            ss>>headerCols;
+            expectCols=false;
+            continue;
+        }
         // first line map ha?
         if (line=="MAP:") 
         {
