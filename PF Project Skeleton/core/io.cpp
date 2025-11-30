@@ -43,6 +43,14 @@ bool loadLevelFile(const char* filename) {
     int row=0;
 
     while (getline(file,line)) {
+
+        if (expectRows)
+        {
+            stringstream ss(line);
+            ss>>headerRows;
+            expectRows=false;
+            continue;
+        }
         // first line map ha?
         if (line=="MAP:") 
         {
