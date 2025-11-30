@@ -77,7 +77,25 @@ bool loadLevelFile(const char* filename) {
             expectCols=true;
             continue;
         }
-        
+        if (line=="SWITCHES:")
+        {
+            Mapinside= false;
+            inSwitchesline=true;
+            inTrainsline=false;
+
+
+
+            continue;
+        }
+        if (line == "TRAINS:")
+        {
+            Mapinside=false;
+            inTrainsline=true;
+            inSwitchesline=false;
+            continue;
+
+            
+        }
         // first line map ha?
         if (line=="MAP:") 
         {
