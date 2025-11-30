@@ -181,82 +181,38 @@ bool loadLevelFile(const char* filename) {
             }
             continue;
         }
-
-        // first line map ha?
-        if (line=="MAP:") 
+        //train sec now
+        if (inTrainsline)
         {
-            Mapinside=true;
-            continue;
-        }
-        // leaving switches for now, maybe next step
-        if (line=="SWITCHES:") 
-        {
-            Mapinside=false;
-            inSwitchesline=true;
-            inTrainsline=false;
-            continue;
-        }
-        // for reading trains section
-        if (line=="TRAINS:") 
-        {
-            Mapinside=false;
-            inTrainsline=true;
-            inSwitchesline=false;
-            continue;
-        }
-        //ts is th switches section
-        if (inSwitchesline) {
-          if (line == "") {
-              continue; // skip empty lines in switches block
-            }
-           // expected line format: A PER_DIR 0 2 2 2 2 STRAIGHT TURN
-            stringstream ss(line);
-            char letter;
-            string mode;
-            int initState;
-            int kup, kright, kdown, kleft;
-            string straightName;
-            string turnName;
-            if (ss >> letter >> mode >> initState >> kup >> kright >> kdown >> kleft >> straightName >> turnName) {
-                int idx = getSwitchIndex(letter);
-                if (idx >= 0 && idx < Maxswitches) 
-                {
-                    // mode: PER_DIR or GLOBAL
-                    if (mode == "GLOBAL") 
-                    {
-                        g_switchMode[idx]=1;
-                    } 
-                    else 
-                    {
-                        g_switchMode[idx]=0;// PER_DIR
-                    }
-
-                    g_switchInitState[idx]= initState;
-                    g_switchState[idx]=initState;
-                    //for the Kswitches thing
-                    g_switchKUp[idx]=kup;
-                    g_switchKRight[idx]=kright;
-                    g_switchKDown[idx]=kdown;
-                    g_switchKLeft[idx]=kleft;
-
-                    g_switchCounterUp[idx]=0;
-                    g_switchCounterRight[idx]=0;
-                    g_switchCounterDown[idx]=0;
-                    g_switchCounterLeft[idx]=0;
-                    g_switchQueueFlip[idx]=false;
-                }
-            }
-            continue;
-        }
-
-        //MAP SECTION 
-        if (Mapinside) {
-            // empty lines k liye
-            if (line=="") 
+            if (line=="")
             {
+
                 continue;
             }
 
+            stringstream ss(line);
+            int spawnTick,x,y,dir,color;
+            if (ss >> spawnTick >> x >> y >> dir >> color)
+            {
+                if (g_numtrains<MaxTrains)
+                {
+                    int i=g_numtrains;
+                    g_trainSpawnTick[i]=spawnTick;
+                    g_trainX[i]=x;
+                    g_trainY[i]=y;
+                    g_traindirection[i]=dir;
+                    g_trainactive[i]=false; // if spawn ten true 
+                    g_trainColor[i]=color;
+                    g_numtrains++;
+                }
+            }  
+
+            continue;
+        }
+    }
+
+
+   
             // length calculation for the row and assigning values.
             if (row<MaxRows)
              {
@@ -278,74 +234,69 @@ bool loadLevelFile(const char* filename) {
             continue;
         }
 
-        //TRAINS SECTION 
-        if (inTrainsline) 
-        {
-            if (line=="") 
-            {
-                // skip empty lines inside TRAINS
-                continue;
-            }
+    //grid thing setting
+    g_rows=(headerRows>0)? headerRows:row;
+    if (g_rows>MaxRows) g_rows=MaxRows;
 
-            stringstream ss(line);
-            int spawnTick, x, y, dir,color;
-
-            // this read 5 integers from the line
-            if (ss>>spawnTick>>x>>y>>dir>>color) {
-                if (g_numtrains<MaxTrains) {
-                    int i=g_numtrains;
-
-                    g_trainSpawnTick[i]=spawnTick;
-                    g_trainX[i]=x;
-                    g_trainY[i]=y;
-           
-                    g_traindirection[i]=dir;
-
-                    g_trainactive[i]=false; //will become true when spawne
-
-                    g_trainColor[i]=color;
-
-                    g_numtrains++;
-                }
-            }
-
-            continue; // done handling this line
-        }
-
-        
+    if (headerCols>0)
+    {
+        g_columns=headerCols;
     }
-    // set grid size from what we actually read
-    g_rows= row;
-    g_columns =MaxColumns;
-
- // now weve got to read and save the destinations and switches
+    else if (maxColumnsInMap>0)
+    {
+        g_columns=maxColumnsInMap;
+    }
+    else
+    {
+        g_columns=MaxColumns;
+    }
+    if (g_columns>MaxColumns) g_columns=MaxColumns;
+    //findin the destinations spawns and switches
     g_numdestinations=0;
-    g_Switchcurrent= 0;
-    //initalizing with false
+    g_Switchcurrent=0;
+    g_numspawns=0;
+
     bool switchEncountered[Maxswitches];
-    for (int i=0;i<Maxswitches;i++) {
+    for (int i=0;i<Maxswitches;i++)
+    {
         switchEncountered[i]=false;
     }
-    //checkin the whole grid and marking destinations in another array
-    for (int y=0;y<g_rows;y++) {
-        for (int x=0;x<g_columns;x++) {
+
+    for (int y=0;y<g_rows;y++)
+    {
+        for (int x=0; x<g_columns;x++)
+        {
             char tile=g_grid[y][x];
 
-            if (tile=='D') 
+            // destination
+            if (tile=='D')
             {
-                if (g_numdestinations <MaxDestinations) 
+                if (g_numdestinations<MaxDestinations)
                 {
-                g_destinationX[g_numdestinations]=x;
-                g_destinationY[g_numdestinations]=y;
-                g_numdestinations++;
+                    g_destinationX[g_numdestinations]=x;
+                    g_destinationY[g_numdestinations]=y;
+                    g_numdestinations++;
                 }
             }
-   //gotta do the same for switches too
-            if (isSwitchTile(tile)) {
-                int idx = getSwitchIndex(tile);
-                if (idx>=0 && idx<Maxswitches && !switchEncountered[idx]) 
+
+            // Spawns
+            if (tile=='S')
+            {
+                if (g_numspawns<MaxSpawns)
                 {
-                    switchEncountered[idx] =true;
+                    g_spawnX[g_numspawns]=x;
+                    g_spawnY[g_numspawns]=y;
+                    g_numspawns++;
+                }
+            }
+
+            //nw fr swich tiles
+            if (isSwitchTile(tile))
+            {
+                int idx=getSwitchIndex(tile);
+                if (idx>=0&&idx<Maxswitches&&!switchEncountered[idx])
+                {
+                    switchEncountered[idx]=true;
                     g_switchX[idx]=x;
                     g_switchY[idx]=y;
                 }
@@ -353,9 +304,11 @@ bool loadLevelFile(const char* filename) {
         }
     }
 
-    for (int i = 0; i < Maxswitches; i++) 
+    // Count how many switches actually exist
+    for (int i = 0; i < Maxswitches; i++)
     {
-        if (switchEncountered[i]) {
+        if (switchEncountered[i])
+        {
             g_Switchcurrent++;
         }
     }
@@ -363,7 +316,10 @@ bool loadLevelFile(const char* filename) {
     file.close();
     return true;
 }
-   
+
+
+
+  
 
 
 // ----------------------------------------------------------------------------
