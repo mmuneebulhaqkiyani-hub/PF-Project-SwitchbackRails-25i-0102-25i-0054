@@ -304,11 +304,14 @@ bool loadLevelFile(const char* filename) {
         }
     }
 
-    // Count how many switches actually exist
-    for (int i = 0; i < Maxswitches; i++)
+    // here we count total of the switches thatt occuredd
+    for (int i=0;i<Maxswitches;i++)
     {
         if (switchEncountered[i])
         {
+
+
+
             g_Switchcurrent++;
         }
     }
@@ -417,6 +420,36 @@ void logSwitchState() {
 // Append tick, switch id, signal color to signals.csv.
 // ----------------------------------------------------------------------------
 void logSignalState() {
+    ofstream out("out/signals.csv", ios::app);
+    if (!out.is_open()) 
+    return;
+
+    for (int i=0;i<Maxswitches;i++)
+    {
+        // only switches that exist
+        if (g_switchX[i]<0||g_switchY[i]<0)
+        {
+            continue;
+        }
+
+        bool occupied=false;
+        for (int t=0;t<g_numtrains;t++)
+        {
+            if (g_trainactive[t]&&g_trainX[t]==g_switchX[i]&&g_trainY[t]==g_switchY[i])
+            {
+                occupied=true;
+
+
+                break;
+            }
+        }
+
+        const char* signal = occupied ? "RED" : "GREEN";
+        char letter='A'+i;
+
+        out< g_currentTickNum<<","<<letter<<","<<signal<<"\n";
+    }
+}
 }
 
 // ----------------------------------------------------------------------------
