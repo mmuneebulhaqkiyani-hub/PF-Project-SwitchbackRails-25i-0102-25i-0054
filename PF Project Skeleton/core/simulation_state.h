@@ -22,7 +22,8 @@
 // TRAIN CONSTANTS
 // ----------------------------------------------------------------------------
   // we have to declare max train constant here and since it dont mention the exact number lets just do a century (W babar lol)
-  const int MaxTrains=100;
+ const int MaxTrains=100;
+  const int MaxSpawns=50;
 
   extern int g_numtrains; // this is the current number of trains in the simulation
  // we have to make arrays for the train properties like its position direction speed and state and stuff;
@@ -39,13 +40,14 @@
  //This should be useful when we do the distance calculation adn stuff;
  extern int g_traindestinationX[MaxTrains]; // destination x for each train
 
- extern int g_traindestinationY[MaxTrains]; // destination y for each train
- extern int g_pastTrainX[MaxTrains]; //using it to store previous position
- extern int g_futureTrainY[MaxTrains];//using it to store next position
- extern int g_futureTrainX[MaxTrains];//using it to store next position
- extern bool g_futureTrainActive[MaxTrains]; // to store if planned move is active
- extern int g_pastTrainY[MaxTrains];//using it to store previous position
- extern int g_trainColor[MaxTrains]; // color of each train
+extern int g_traindestinationY[MaxTrains]; // destination y for each train
+extern int g_pastTrainX[MaxTrains]; //using it to store previous position
+extern int g_futureTrainY[MaxTrains];//using it to store next position
+extern int g_futureTrainX[MaxTrains];//using it to store next position
+extern bool g_futureTrainActive[MaxTrains]; // to store if planned move is active
+extern int g_pastTrainY[MaxTrains];//using it to store previous position
+extern int g_trainColor[MaxTrains]; // color of each train
+extern int g_safetyDelay[MaxTrains];
 // ---- ------------------------------------------------------------------------
 // SWITCH CONSTANTS
 // ----------------------------------------------------------------------------
@@ -60,12 +62,12 @@ extern int g_switchY[Maxswitches]; // y position for each switch
 
 extern int  g_switchState[Maxswitches];// current state (0 = straight, 1 = turn)
 
-extern int  g_switchInitState[Maxswitches]; // initial state from level file
-extern int  g_switchMode[Maxswitches];// 0 = PER_DIR, 1 = GLOBAL
-extern int  g_switchCounterUp[Maxswitches];
-extern int  g_switchCounterRight[Maxswitches];
-extern int  g_switchCounterDown[Maxswitches];
-extern int  g_switchCounterLeft[Maxswitches];
+extern int g_switchInitState[Maxswitches]; // initial state from level file
+extern int g_switchMode[Maxswitches];// 0 = PER_DIR, 1 = GLOBAL
+extern int g_switchCounterUp[Maxswitches];
+extern int g_switchCounterRight[Maxswitches];
+extern int g_switchCounterDown[Maxswitches];
+extern int g_switchCounterLeft[Maxswitches];
 extern bool g_switchQueueFlip[Maxswitches];// ts wold be true if switch should flip at end of tick so like if tick is 5 and we queue flip it then at the end of tick 5 it will flip and be effective for tick 6 (hopefully)
 extern int g_switchKUp[Maxswitches];
 extern int g_switchKRight[Maxswitches];
@@ -76,15 +78,15 @@ extern int g_switchKLeft[Maxswitches];
 // WEATHER CONSTANTS
 // ----------------------------------------------------------------------------
 
-const int WeatherNormal = 0;
-const int WeatherRain   = 1;
-const int WeatherFog    = 2;
+const int WeatherNormal= 0;
+const int WeatherRain= 1;
+const int WeatherFog= 2;
 // ----------------------------------------------------------------------------
 // SIGNAL CONSTANTS
 // ----------------------------------------------------------------------------
-const int SignalRed    = 0;
-const int SignalYellow = 1;
-const int SignalGreen  = 2;
+const int SignalRed= 0;
+const int SignalYellow= 1;
+const int SignalGreen= 2;
 
 
 
@@ -108,8 +110,10 @@ extern int g_currentTickNum; // this will be  the current simulation tick
 // ----------------------------------------------------------------------------
 // GLOBAL STATE: SPAWN POINTS
 // ----------------------------------------------------------------------------
-extern int  g_trainSpawnTick[MaxTrains];
-
+extern int g_trainSpawnTick[MaxTrains];
+extern int g_numspawns;
+extern int g_spawnX[MaxSpawns];
+extern int g_spawnY[MaxSpawns];
 // ----------------------------------------------------------------------------
 // GLOBAL STATE: DESTINATION POINTS
 // ----------------------------------------------------------------------------
@@ -140,9 +144,9 @@ extern int g_trainsCrashed;// ts the trains that crashed thing
 // ----------------------------------------------------------------------------
 //so we gonna need bool to see if the emergency halt zone is active or no it will be useful when we implement the emergency halt feature and extern is becz it will be in the .cpp file
 extern bool g_emergencyActive;
-extern int  g_emergencyCenterX;// center x of 3x3 emergency zone
-extern int  g_emergencyCenterY;// center y of 3x3 emergency zone
-extern int  g_emergencyTicksRemaining;// ticks left for halt
+extern int g_emergencyCenterX;// center x of 3x3 emergency zone
+extern int g_emergencyCenterY;// center y of 3x3 emergency zone
+extern int g_emergencyTicksRemaining;// ticks left for halt
 
 // ----------------------------------------------------------------------------
 // INITIALIZATION FUNCTION

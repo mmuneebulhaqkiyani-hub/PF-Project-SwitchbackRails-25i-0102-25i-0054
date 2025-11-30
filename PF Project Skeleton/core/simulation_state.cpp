@@ -30,7 +30,11 @@ int  g_futureTrainY[MaxTrains];
 bool g_futureTrainActive[MaxTrains];
 
 int  g_trainSpawnTick[MaxTrains];
-int  g_trainColor[MaxTrains];      
+int  g_trainColor[MaxTrains];
+int  g_numspawns=0;
+int  g_spawnX[MaxSpawns];
+int  g_spawnY[MaxSpawns];
+int  g_safetyDelay[MaxTrains];
 
 int  g_currentTickNum=0;
 
@@ -117,6 +121,13 @@ void initializeSimulationState() {
         g_futureTrainActive[i] = false;
         g_trainSpawnTick[i]=0;
         g_trainColor[i]=0;
+        g_safetyDelay[i]=0;
+    }
+
+    g_numspawns = 0;
+    for (int i = 0; i < MaxSpawns; i++) {
+        g_spawnX[i] = -1;
+        g_spawnY[i] = -1;
     }
 
     // Switches

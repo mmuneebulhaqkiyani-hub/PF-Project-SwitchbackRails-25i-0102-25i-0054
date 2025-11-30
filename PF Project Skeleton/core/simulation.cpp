@@ -19,7 +19,7 @@ void initializeSimulation() {
     g_currentTickNum=0;
     g_totalTicksRun =0;
     g_trainsArrived =0;
-    g_trainsCrashed =0;
+    g_trainsCrashed=0;
 
 }
 
@@ -28,18 +28,16 @@ void initializeSimulation() {
 // ----------------------------------------------------------------------------
 
 void simulateOneTick() {
-
+    updateEmergencyHalt();
     spawnTrainsForTick();
     determineAllRoutes();
-    bool allValid=determineNextPosition();
-    if (!allValid) {
-        return;  //thi gona skip the tick if their are invalid positions
-    }
+    determineNextPosition();
+    detectCollisions();
+    applyEmergencyHalt();
+    moveAllTrains();
+    updateSwitchCounters();
     queueSwitchFlips();
 
-    detectCollisions();
-    moveAllTrains();
- 
     applyDeferredFlips();
     checkArrivals();
 
@@ -47,7 +45,7 @@ void simulateOneTick() {
     logTrainTrace();
     logSwitchState();
     logSignalState();
-g_currentTickNum++;
+    g_currentTickNum++;
     g_totalTicksRun++;
 }
 
@@ -58,7 +56,7 @@ g_currentTickNum++;
 // ----------------------------------------------------------------------------
 
 bool isSimulationComplete() {
-return g_trainsArrived>=g_numtrains;
+return (g_trainsArrived+g_trainsCrashed)>=g_numtrains;
 
 // tis gona return true if all yhetrains have arrived
 
