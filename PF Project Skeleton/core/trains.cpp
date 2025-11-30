@@ -97,8 +97,8 @@ bool determineNextPosition() {
              allValidcheck=false;
              //this will make g_trainactive[i] = false;
         }
- return allValidcheck;
-}
+
+} return allValidcheck;
 }
 
 // ----------------------------------------------------------------------------
@@ -184,10 +184,10 @@ int getNextDirection(int currentDir,char tile) {
 // Choose best direction at '+' toward destination.
 // ----------------------------------------------------------------------------
 
-int getSmartDirectionAtCrossing(int currentDir, int x, int y, int finalgoalX, int finaLgoalY) 
+int getSmartDirectionAtCrossing(int currentDir, int x, int y, int finalgoalX, int finalgoalY) 
 { 
-    int bestDir=-1;
-    int bestDist=999999;  
+    int bestDir=currentDir;
+    int bestDist=99999;  
       for (int dir=0;dir<4;dir++)
     {
         int newx=x;
@@ -236,9 +236,16 @@ int getSmartDirectionAtCrossing(int currentDir, int x, int y, int finalgoalX, in
             bestDir=dir;
         }
     }
+     //if no valid direction return -1
+    if (bestDist==99999)
+    {
+        return -1;
+    }
 
-    return bestDir;   //-1 if none is valid
+    return bestDir;//INVALID
 }
+
+
 
 
 // ----------------------------------------------------------------------------
@@ -270,7 +277,7 @@ void determineAllRoutes() {
 
 
         int bestIndex=0;
-        int bestDist =999999999999; 
+        int bestDist =99999; 
         // Check all destinations
         for (int j=0;j<g_numdestinations;j++) 
         {

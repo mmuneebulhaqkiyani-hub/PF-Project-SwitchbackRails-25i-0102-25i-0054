@@ -231,6 +231,41 @@ bool loadLevelFile() {
 // Create/clear CSV logs with headers.
 // ----------------------------------------------------------------------------
 void initializeLogFiles() {
+    //trace
+    {
+        ofstream out("out/trace.csv");
+        if (out.is_open()) 
+        {
+            out<<"Tick,TrainID,X,Y,Direction,State\n";
+        }
+    }
+
+    //switches
+    {
+        ofstream out("out/switches.csv");
+        if (out.is_open()) 
+        {
+            out<<"Tick,Switch,Mode,State\n";
+        }
+    }
+
+    //signals
+    {
+        ofstream out("out/signals.csv");
+        if (out.is_open()) 
+        {
+            out<<"Tick,Switch,Signal\n";
+        }
+    }
+
+    //metrics
+    {
+        ofstream out("out/metrics.txt");
+        if (out.is_open()) 
+        {
+            out << "";  
+        }
+    }
 }
 
 // ----------------------------------------------------------------------------
@@ -239,6 +274,19 @@ void initializeLogFiles() {
 // Append tick, train id, position, direction, state to trace.csv.
 // ----------------------------------------------------------------------------
 void logTrainTrace() {
+     ofstream out("out/trace.csv", ios::app);
+    if (!out.is_open()) 
+    return;
+
+    for (int i = 0; i < g_numtrains; i++) {
+        const char *stateStr = g_trainactive[i] ?"ACTIVE":"INACTIVE";
+        out << g_currentTickNum << ","
+            << i << ","
+            << g_trainX[i] << ","
+            << g_trainY[i] << ","
+            << g_traindirection[i] << ","
+            << stateStr << "\n";
+    }
 }
 
 // ----------------------------------------------------------------------------
@@ -247,6 +295,23 @@ void logTrainTrace() {
 // Append tick, switch id/mode/state to switches.csv.
 // ----------------------------------------------------------------------------
 void logSwitchState() {
+    ofstream out("out/switches.csv", ios::app);
+    if (!out.is_open()) return;
+
+    for (int i = 0; i < Maxswitches; i++) {
+        //only log switches that exist on the board
+        if (g_switchX[i] < 0 || g_switchY[i]<0) continue;
+
+        char letter = 'A' + i;
+        const char *modeStr = (g_switchMode[i]==1) ? "GLOBAL" : "PER_DIR";
+        const char *stateStr= (g_switchState[i]==0) ? "STRAIGHT" : "TURN";
+
+        out << g_currentTickNum << ","
+            << letter << ","
+            << modeStr << ","
+            << stateStr << "\n";
+    }
+
 }
 
 // ----------------------------------------------------------------------------
@@ -263,4 +328,12 @@ void logSignalState() {
 // Write summary metrics to metrics.txt.
 // ----------------------------------------------------------------------------
 void writeMetrics() {
+    ofstream out("out/metrics.txt", ios::app);
+    if (!out.is_open()) return;
+
+    out << "TotalTicks: "     << g_totalTicksRun  << "\n";
+    out << "TrainsDelivered: "<< g_trainsArrived << "\n";
+    out << "TrainsCrashed: "  << g_trainsCrashed << "\n";
+
+    // TODO: add AverageWaitTime, EnergyUsed, SwitchFlips, Efficiency, etc.
 }
