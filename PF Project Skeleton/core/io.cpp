@@ -94,8 +94,28 @@ bool loadLevelFile(const char* filename) {
             inSwitchesline=false;
             continue;
 
-            
+
         }
+        //switches sectionnow
+        if (inSwitchesline)
+        {
+            //ts id gonna skip empty lines
+            if (line=="")
+            {
+          
+                continue;
+            }
+
+            // the format was something liek a per-dir 0 2 2 2 2 straight turn
+            stringstream ss(line);
+            char letter;
+            string mode;
+            int initState;
+            int kup,kright,kdown,kleft;
+            string straightName;
+            string turnName;
+             // only the first 7 tokens r usefukl
+            if (ss>>letter>>mode>>initState>>kup>>kright>>kdown>>kleft)
         // first line map ha?
         if (line=="MAP:") 
         {
