@@ -72,8 +72,12 @@ bool loadLevelFile(const char* filename) {
             expectRows=true;
             continue;
         }
+        if (line=="COLS:")
+        {
+            expectCols=true;
+            continue;
+        }
         
-
         // first line map ha?
         if (line=="MAP:") 
         {
