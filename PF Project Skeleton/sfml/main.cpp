@@ -5,17 +5,39 @@
 #include "../core/grid.h"
 
 #include <iostream>
+#include <string>
+#include <vector>
 
 using namespace std;
 
-// Print current grid to terminal
+// Print current grid to terminal once per tick (trains as 't')
 static void printGridToTerminal() {
+    std::vector<std::string> rows(g_rows, std::string(g_columns, ' '));
     for (int y = 0; y < g_rows; y++) {
         for (int x = 0; x < g_columns; x++) {
-            cout << g_grid[y][x];
+            rows[y][x] = g_grid[y][x];
         }
-        cout << "\n";
     }
+
+    for (int i = 0; i < g_numtrains; i++) {
+        if (!g_trainactive[i]) {
+            continue;
+        }
+        int x = g_trainX[i];
+        int y = g_trainY[i];
+        if (!isInBounds(x, y)) {
+            continue;
+        }
+        rows[y][x] = 't';
+    }
+
+    for (int y = 0; y < g_rows; y++) {
+        cout << rows[y] << "\n";
+    }
+}
+
+static void clearScreen() {
+    cout << "\033[2J\033[H";
 }
 
 int main(int argc, char** argv) {
@@ -40,17 +62,20 @@ int main(int argc, char** argv) {
 
     const int MAX_TICKS = 100000; // safety cap
 
-    while (true) {
-        cout << "==============================\n";
-        cout << "Tick: " << g_currentTickNum << "\n";
-        printGridToTerminal();
-        cout << "==============================\n\n";
+    clearScreen();
+    cout << "Tick: " << g_currentTickNum << "\n";
+    printGridToTerminal();
 
+    while (true) {
         if (isSimulationComplete() || g_currentTickNum >= MAX_TICKS) {
             break;
         }
 
         simulateOneTick();
+
+        clearScreen();
+        cout << "Tick: " << g_currentTickNum << "\n";
+        printGridToTerminal();
     }
 
     cout << "Simulation finished.\n";

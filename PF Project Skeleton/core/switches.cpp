@@ -201,7 +201,7 @@ void applyDeferredFlips() {
       for (int i=0;i<Maxswitches;i++)
     {
         //Check if the switch has been marked for the flip 
-        if (g_switchQueueFlip[i]) 
+        if (g_switchQueueFlip[i])
         {
             //fllippin
             if (g_switchState[i]==0) //currently STRAIGHT
@@ -212,6 +212,12 @@ void applyDeferredFlips() {
             {
                 g_switchState[i]=0; //flip to straight or vice versa
             }
+
+            // reset counters after a flip
+            g_switchCounterUp[i]=0;
+            g_switchCounterRight[i]=0;
+            g_switchCounterDown[i]=0;
+            g_switchCounterLeft[i]=0;
 
             //Reset it as it has been applied
             g_switchQueueFlip[i]=false;
@@ -226,6 +232,7 @@ void applyDeferredFlips() {
 // Update signal colors for switches.
 // ----------------------------------------------------------------------------
 void updateSignalLights() {
+    // signals are derived directly when logging
 }
 
 // ----------------------------------------------------------------------------
@@ -234,6 +241,19 @@ void updateSignalLights() {
 // Manually toggle a switch state.
 // ----------------------------------------------------------------------------
 void toggleSwitchState() {
+    for (int i = 0; i < Maxswitches; i++)
+    {
+        if (g_switchX[i] < 0 || g_switchY[i] < 0)
+        {
+            continue;
+        }
+
+        g_switchState[i] = (g_switchState[i] == 0) ? 1 : 0;
+        g_switchCounterUp[i] = 0;
+        g_switchCounterRight[i] = 0;
+        g_switchCounterDown[i] = 0;
+        g_switchCounterLeft[i] = 0;
+    }
 }
 
 // ----------------------------------------------------------------------------
@@ -242,4 +262,12 @@ void toggleSwitchState() {
 // Return the state for a given direction.
 // ----------------------------------------------------------------------------
 int getSwitchStateForDirection() {
+    for (int i = 0; i < Maxswitches; i++)
+    {
+        if (g_switchX[i] >= 0 && g_switchY[i] >= 0)
+        {
+            return g_switchState[i];
+        }
+    }
+    return 0;
 }
