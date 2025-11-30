@@ -19,7 +19,7 @@ void initializeSimulation() {
     g_currentTickNum=0;
     g_totalTicksRun =0;
     g_trainsArrived =0;
-    g_trainsCrashed =0;
+    g_trainsCrashed=0;
 
 }
 
@@ -56,7 +56,7 @@ void simulateOneTick() {
 // ----------------------------------------------------------------------------
 
 bool isSimulationComplete() {
-return (g_trainsArrived + g_trainsCrashed) >= g_numtrains;
+return (g_trainsArrived+g_trainsCrashed)>=g_numtrains;
 
 // tis gona return true if all yhetrains have arrived
 

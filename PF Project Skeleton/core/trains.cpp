@@ -12,7 +12,7 @@
 // Storage for planned moves (for collisions).
 
 // Previous positions (to detect switch entry).
-
+//this is helper function to mark a train as crashed
 static void markTrainCrash(int idx) {
     if (idx < 0 || idx >= MaxTrains) {
         return;
@@ -69,14 +69,14 @@ void spawnTrainsForTick() {
 
         if (blocked)
         {
-            // try again next tick if the spawn is occupied
+            //try again next tick if the spawn is occupied
             g_trainSpawnTick[i]=g_currentTickNum+1;
             continue;
         }
 
         g_trainactive[i]=true;
 
-        // at spawn both will be same they will be udated later
+        //at spawn both will be same they will be udated later
         g_pastTrainX[i]=g_trainX[i];
         g_pastTrainY[i]=g_trainY[i];
 
@@ -104,43 +104,43 @@ bool determineNextPosition() {
             continue;
         }
 
-        // store where the train was before planning this tick
-        g_pastTrainX[i] = g_trainX[i];
-        g_pastTrainY[i] = g_trainY[i];
+        //store where the train was before planning this tick
+        g_pastTrainX[i]=g_trainX[i];
+        g_pastTrainY[i]=g_trainY[i];
 
-        int currentX = g_trainX[i];
-        int currentY = g_trainY[i];
+        int currentX=g_trainX[i];
+        int currentY=g_trainY[i];
 
-        g_futureTrainX[i] = currentX;
-        g_futureTrainY[i] = currentY;
-        g_futureTrainActive[i] = true;
+        g_futureTrainX[i]=currentX;
+        g_futureTrainY[i]=currentY;
+        g_futureTrainActive[i]=true;
 
         char tile = g_grid[currentY][currentX];
 
-        if (tile == '=') {
-            if (g_safetyDelay[i] == 0)
+        if (tile =='=') {
+            if (g_safetyDelay[i]==0)
             {
-                g_safetyDelay[i] = 1;
+                g_safetyDelay[i]=1;
                 continue;
             }
             else
             {
-                g_safetyDelay[i] = 0;
+                g_safetyDelay[i]=0;
             }
         }
 
         int nextDirection = -1;
-        if (tile == '+')
+        if (tile =='+')
         {
-            int goalX = g_traindestinationX[i];
-            int goalY = g_traindestinationY[i];
+            int goalX=g_traindestinationX[i];
+            int goalY =g_traindestinationY[i];
             nextDirection = getSmartDirectionAtCrossing(g_traindirection[i], currentX, currentY, goalX, goalY);
         }
         else if (isSwitchTile(tile))
         {
             int idx = getSwitchIndex(tile);
             int state = (idx >= 0 && idx < Maxswitches) ? g_switchState[idx] : 0;
-            if (state == 0) {
+            if (state ==0) {
                 nextDirection = g_traindirection[i];
             } else {
                 // simple turn: rotate 90 degrees to the right for deterministic behaviour
@@ -164,19 +164,19 @@ bool determineNextPosition() {
 
         int nx = currentX;
         int ny = currentY;
-        if (nextDirection == 0)
+        if (nextDirection==0)
         {
             ny = ny - 1;
         }
-        else if (nextDirection == 1)
+        else if (nextDirection==1)
         {
             nx = nx + 1;
         }
-        else if (nextDirection == 2)
+        else if (nextDirection==2)
         {
             ny = ny + 1;
         }
-        else if (nextDirection == 3)
+        else if (nextDirection==3)
         {
             nx = nx - 1;
         }
@@ -225,31 +225,30 @@ int getNextDirection(int currentDir,char tile) {
         
         return 1;// up ====> right     
         if (currentDir==1)
-         return 0;// right --> up
+         return 0;//right up
         if (currentDir==2) 
-        return 3;// down --> left
+        return 3;//down left
         if (currentDir==3) 
-        return 2;// left -> down
+        return 2;//left down
 
         return -1;
     }
 
-    // now fr this \ thing btw we have to use double \ bcz its escape characterthing
+    //now fr this \ thing btw we have to use double \ bcz its escape characterthing
     if (tile == '\\')
     {
         if (currentDir==0) 
-        return 3;// up --> left
+        return 3;// up left
         if (currentDir==3) 
-        return 0;// left -> up
+        return 0;// left up
         if (currentDir==2) 
-        return 1;// down ---> right
+        return 1;// down right
         if (currentDir == 1) 
-        return 2;// right ==> down
-
+        return 2;// right down
         return -1;
     }
 
-    // the + will make the train just go ahead in the same direction
+    // the + thing is for crossing we have a func for that so just return current direction
     if (tile == '+')
     {
         return currentDir;
@@ -417,7 +416,7 @@ void moveAllTrains() {
             continue;
         }
 
-        g_trainX[i] = g_futureTrainX[i];
+        g_trainX[i] =g_futureTrainX[i];
         g_trainY[i] = g_futureTrainY[i];
 
     }
@@ -512,9 +511,9 @@ void detectCollisions() {
 
            
             //HEADON SWAP COLLISION                  
-            bool i_hits_j = (g_futureTrainX[i]==g_trainX[j] &&
+            bool i_hits_j=(g_futureTrainX[i]==g_trainX[j] &&
                              g_futureTrainY[i]==g_trainY[j]);
-            bool j_hits_i = (g_futureTrainX[j]==g_trainX[i] &&
+            bool j_hits_i =(g_futureTrainX[j]==g_trainX[i] &&
                              g_futureTrainY[j]==g_trainY[i]);
 
             if (i_hits_j && j_hits_i)
@@ -582,7 +581,7 @@ void checkArrivals() {
         }
         if (g_trainX[i]==g_traindestinationX[i] && g_trainY[i]==g_traindestinationY[i])
         {
-            g_trainactive[i]=false;   // train arrived so despawn
+            g_trainactive[i]=false;   //train arrived so despawn
             g_trainsArrived++;       //count arrivals 
         }
     }
@@ -595,7 +594,7 @@ void checkArrivals() {
 // Apply halt to trains in the active zone.
 // ----------------------------------------------------------------------------
 void applyEmergencyHalt() {
-    if (!g_emergencyActive || g_emergencyTicksRemaining <= 0)
+    if (!g_emergencyActive || g_emergencyTicksRemaining<=0)
     {
         return;
     }
@@ -619,10 +618,10 @@ void applyEmergencyHalt() {
 
         int fx = g_futureTrainX[i];
         int fy = g_futureTrainY[i];
-        if (fx >= minX && fx <= maxX && fy >= minY && fy <= maxY)
+        if (fx >=minX && fx <=maxX &&fy >=minY && fy<=maxY)
         {
-            g_futureTrainX[i] = g_trainX[i];
-            g_futureTrainY[i] = g_trainY[i];
+            g_futureTrainX[i]=g_trainX[i];
+            g_futureTrainY[i]=g_trainY[i];
         }
     }
 }
@@ -638,13 +637,13 @@ void updateEmergencyHalt() {
         return;
     }
 
-    if (g_emergencyTicksRemaining > 0)
+    if (g_emergencyTicksRemaining>0)
     {
         g_emergencyTicksRemaining--;
     }
 
-    if (g_emergencyTicksRemaining <= 0)
+    if (g_emergencyTicksRemaining<=0)
     {
-        g_emergencyActive = false;
+        g_emergencyActive=false;
     }
 }

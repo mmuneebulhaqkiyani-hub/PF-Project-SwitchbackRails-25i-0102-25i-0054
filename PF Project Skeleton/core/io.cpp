@@ -432,5 +432,4 @@ void writeMetrics() {
     out << "TrainsDelivered: "<< g_trainsArrived << "\n";
     out << "TrainsCrashed: "  << g_trainsCrashed << "\n";
 
-    // TODO: add AverageWaitTime, EnergyUsed, SwitchFlips, Efficiency, etc.
 }

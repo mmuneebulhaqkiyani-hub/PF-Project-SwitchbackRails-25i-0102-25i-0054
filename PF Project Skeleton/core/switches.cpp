@@ -241,16 +241,16 @@ void updateSignalLights() {
 // Manually toggle a switch state.
 // ----------------------------------------------------------------------------
 void toggleSwitchState() {
-    for (int i = 0; i < Maxswitches; i++)
+    for (int i=0; i<Maxswitches; i++)
     {
-        if (g_switchX[i] < 0 || g_switchY[i] < 0)
+        if (g_switchX[i] < 0 ||g_switchY[i] < 0)
         {
             continue;
         }
 
-        g_switchState[i] = (g_switchState[i] == 0) ? 1 : 0;
-        g_switchCounterUp[i] = 0;
-        g_switchCounterRight[i] = 0;
+        g_switchState[i] = (g_switchState[i] ==0)?1:0;
+        g_switchCounterUp[i] =0;
+        g_switchCounterRight[i]=0;
         g_switchCounterDown[i] = 0;
         g_switchCounterLeft[i] = 0;
     }
@@ -262,9 +262,9 @@ void toggleSwitchState() {
 // Return the state for a given direction.
 // ----------------------------------------------------------------------------
 int getSwitchStateForDirection() {
-    for (int i = 0; i < Maxswitches; i++)
+    for (int i=0; i<Maxswitches;i++)
     {
-        if (g_switchX[i] >= 0 && g_switchY[i] >= 0)
+        if (g_switchX[i]>=0 && g_switchY[i]>= 0)
         {
             return g_switchState[i];
         }

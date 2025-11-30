@@ -10,12 +10,12 @@
 
 using namespace std;
 
-// Print current grid to terminal once per tick (trains as 't')
+// Print current grid to terminal once per tick 
 static void printGridToTerminal() {
     std::vector<std::string> rows(g_rows, std::string(g_columns, ' '));
-    for (int y = 0; y < g_rows; y++) {
-        for (int x = 0; x < g_columns; x++) {
-            rows[y][x] = g_grid[y][x];
+    for (int y=0; y< g_rows; y++) {
+        for (int x =0;x<g_columns; x++) {
+            rows[y][x] =g_grid[y][x];
         }
     }
 
@@ -43,7 +43,7 @@ static void clearScreen() {
 int main(int argc, char** argv) {
     // Need a level file path
     if (argc < 2) {
-        cout << "Usage:\n";
+        cout << "TRY THIS:\n";
         cout << "  ./switchback_rails data/levels/easy_level.lvl\n";
         cout << "  ./switchback_rails data/levels/medium_level.lvl\n";
         cout << "  ./switchback_rails data/levels/hard_level.lvl\n";
@@ -54,7 +54,7 @@ int main(int argc, char** argv) {
     const char* levelPath = argv[1];
 
     if (!loadLevelFile(levelPath)) {
-        cerr << "Failed to load level file: " << levelPath << "\n";
+        cerr << "Failed to load level file: "<<levelPath<<"\n";
         return 1;
     }
 
@@ -67,7 +67,7 @@ int main(int argc, char** argv) {
     printGridToTerminal();
 
     while (true) {
-        if (isSimulationComplete() || g_currentTickNum >= MAX_TICKS) {
+        if (isSimulationComplete()||g_currentTickNum >= MAX_TICKS) {
             break;
         }
 
@@ -79,10 +79,10 @@ int main(int argc, char** argv) {
     }
 
     cout << "Simulation finished.\n";
-    cout << "Total ticks run: "   << g_totalTicksRun  << "\n";
-    cout << "Trains delivered: "  << g_trainsArrived
-         << " / " << g_numtrains << "\n";
-    cout << "Trains crashed: "    << g_trainsCrashed << "\n";
+    cout << "Total ticks run: " << g_totalTicksRun  << "\n";
+    cout << "Trains delivered: "<< g_trainsArrived
+         << " / "<< g_numtrains<< "\n";
+    cout << "Trains crashed: "<< g_trainsCrashed << "\n";
 
     return 0;
 }

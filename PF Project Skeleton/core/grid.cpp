@@ -73,9 +73,9 @@ int getSwitchIndex(char tile) {
      int index = 0;
      char letter = 'A';
     //index loop
-    while (letter != tile) {
-            index = index + 1;
-            letter = letter + 1;
+    while (letter!=tile) {
+            index=index + 1;
+            letter=letter + 1;
         }
         
       return index;
