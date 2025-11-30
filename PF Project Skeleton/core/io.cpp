@@ -41,6 +41,12 @@ bool loadLevelFile(const char* filename) {
     bool inTrainsline=false;   //are we inside TRAINS section ""Train:"
     bool inSwitchesline=false; //are we inside SWITCHES section "Switches:"
     int row=0;
+    bool expectRows=false;   
+    bool expectCols=false;     
+
+    int headerRows=0;
+    int headerCols=0;
+    int maxColumnsInMap=0;
 
     while (getline(file,line)) {
 
@@ -210,29 +216,6 @@ bool loadLevelFile(const char* filename) {
             continue;
         }
     }
-
-
-   
-            // length calculation for the row and assigning values.
-            if (row<MaxRows)
-             {
-                int lengthline =(int)line.size();
-
-                // har column k liye for the row
-                for (int i = 0;i <lengthline && i < MaxColumns;i++) 
-                {
-                    g_grid[row][i]=line[i];
-                }
-                // extra columns mai spaces
-                for (int i =lengthline; i<MaxColumns; i++) 
-                {
-                    g_grid[row][i]= ' ';
-                }
-
-                row = row + 1;
-            }
-            continue;
-        }
 
     //grid thing setting
     g_rows=(headerRows>0)? headerRows:row;
@@ -447,10 +430,10 @@ void logSignalState() {
         const char* signal = occupied ? "RED" : "GREEN";
         char letter='A'+i;
 
-        out< g_currentTickNum<<","<<letter<<","<<signal<<"\n";
+        out<< g_currentTickNum<<","<<letter<<","<<signal<<"\n";
     }
 }
-}
+
 
 // ----------------------------------------------------------------------------
 // WRITE FINAL METRICS
@@ -459,7 +442,8 @@ void logSignalState() {
 // ----------------------------------------------------------------------------
 void writeMetrics() {
     ofstream out("out/metrics.txt", ios::app);
-    if (!out.is_open()) return;
+    if (!out.is_open()) 
+    return;
 
     out << "TotalTicks: "     << g_totalTicksRun  << "\n";
     out << "TrainsDelivered: "<< g_trainsArrived << "\n";
