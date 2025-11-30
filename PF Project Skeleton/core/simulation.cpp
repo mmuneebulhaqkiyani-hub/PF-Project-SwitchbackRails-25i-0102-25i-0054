@@ -15,10 +15,8 @@
 // ----------------------------------------------------------------------------
 
 void initializeSimulation() {
-//ts will reset all global state
- initializeSimulationState();
-
- 
+    g_trainsArrived=0;
+    g_currentTickNum=0;
 
 }
 
@@ -28,16 +26,27 @@ void initializeSimulation() {
 
 void simulateOneTick() {
 
- spawnTrainsForTick();
- g_currentTickNum++;
+    spawnTrainsForTick();
+    bool allValid=determineNextPosition();
+    if (!allValid) {
+        return;  //thi gona skip the tick if their are invalid positions
+    }
+    updateSwitchCounters();
+    queueSwitchFlips();
+    detectCollisions();
+    moveAllTrains();
+    checkArrivals();
 }
+
+
 
 // ----------------------------------------------------------------------------
 // CHECK IF SIMULATION IS COMPLETE
 // ----------------------------------------------------------------------------
 
 bool isSimulationComplete() {
-    //for now we will stop the thing at 50 ticks
-    return (g_currentTickNum > 50);
+return g_trainsArrived>=g_numtrains;
+
+// tis gona return true if all yhetrains have arrived
 
 }
