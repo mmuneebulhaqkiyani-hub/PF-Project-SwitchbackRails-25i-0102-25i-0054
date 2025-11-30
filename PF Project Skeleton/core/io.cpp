@@ -59,6 +59,14 @@ bool loadLevelFile(const char* filename) {
             expectCols=false;
             continue;
         }
+        // ts id the section headers
+        if (line=="MAP:")
+        {
+            Mapinside=true;
+            inTrainsline=false;
+            inSwitchesline=false;
+            continue;
+        }
         // first line map ha?
         if (line=="MAP:") 
         {
